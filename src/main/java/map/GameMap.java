@@ -2,12 +2,12 @@ package map;
 
 import java.util.ArrayList;
 
-public class Map {
+public class GameMap {
     private final int width = 8000;
     private final int height = 8000;
     private final ArrayList<Cell> map;
 
-    public Map() {
+    public GameMap() {
         this.map = spawnEmptyMap();
     }
 

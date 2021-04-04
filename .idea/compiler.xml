@@ -7,7 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Lucky Woodcutter" />
-        <module name="LuckyWoodcutter" />
+        <module name="Lucky-Woodcutter" />
       </profile>
     </annotationProcessing>
   </component>

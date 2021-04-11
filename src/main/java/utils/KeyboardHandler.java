@@ -1,7 +1,5 @@
 package utils;
 
-import game.GamePanel;
-
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.List;
@@ -18,9 +16,9 @@ public class KeyboardHandler implements KeyListener{
     public Key attack = new Key(keys);
     public Key escape = new Key(keys);
 
-    public KeyboardHandler(GamePanel game) {
-        game.addKeyListener(this);
-    }
+//    public KeyboardHandler(GamePanel game) {
+//        game.addKeyListener(this);
+//    }
 
     public void releaseAll() {
         for (Key key : keys) {

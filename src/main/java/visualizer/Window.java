@@ -1,14 +1,11 @@
 package visualizer;
 
-import creatures.persons.player.Player;
 import map.Cell;
 import map.GameMap;
+import states.StateManager;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicTabbedPaneUI;
-import javax.swing.plaf.basic.BasicTreeUI;
 import java.awt.*;
-import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
 public class Window extends JPanel implements Runnable {
@@ -18,8 +15,8 @@ public class Window extends JPanel implements Runnable {
     private final int height;
     private BufferedImage image;
     private Graphics2D graphics2D;
-    private MouseHandler mouse;
-    private KeyboardHandler keyboard;
+    //    private MouseHandler mouse;
+//    private KeyboardHandler keyboard;
     private StateManager stateManager;
     private static Thread thread;
 
@@ -93,7 +90,9 @@ public class Window extends JPanel implements Runnable {
         Graphics graphics = this.getGraphics();
         //graphics.drawImage(image, 0, 0, 200, 200, null);
         for (var cell: GameMap.spawnEmptyMap()){
-            graphics.drawImage(image, cell.getX() - Cell.cellSize, cell.getY() - Cell.cellSize, cell.getX(), cell.getY(), null);
+            var nx = cell.getX() * Cell.cellSize;
+            var ny = cell.getY() * Cell.cellSize;
+            graphics.drawImage(image, nx , ny , Cell.cellSize - 1, Cell.cellSize - 1, null);
         }
         graphics.dispose();
     }
@@ -102,8 +101,8 @@ public class Window extends JPanel implements Runnable {
         running = true;
         image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         graphics2D = (Graphics2D) image.getGraphics();
-        mouse = new MouseHandler(this);
-        keyboard = new KeyboardHandler(this);
+//        mouse = new MouseHandler(this);
+//        keyboard = new KeyboardHandler(this);
         stateManager = new StateManager();
     }
 

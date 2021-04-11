@@ -1,6 +1,4 @@
-package visualizer;
-
-import map.GameMap;
+package states;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -52,11 +50,11 @@ public class StateManager {
         }
     }
 
-    public void input(MouseHandler mouse, KeyboardHandler keyboard) {
-        for (GameState state : states) {
-            state.input(mouse, keyboard);
-        }
-    }
+//    public void input(MouseHandler mouse, KeyboardHandler keyboard) {
+//        for (GameState state : states) {
+//            state.input(mouse, keyboard);
+//        }
+//    }
 
     public void render(Graphics2D graphics2D) {
         for (GameState state : states) {

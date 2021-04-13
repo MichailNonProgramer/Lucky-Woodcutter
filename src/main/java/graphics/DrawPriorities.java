@@ -1,4 +1,4 @@
-package worldObjects;
+package graphics;
 
 public enum DrawPriorities {
     PLAYER (5),

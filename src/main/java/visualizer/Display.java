@@ -5,12 +5,12 @@ import java.awt.image.BufferStrategy;
 
 public class Display  extends JFrame{
     private BufferStrategy bufferStrategy;
-    private Window window;
+    private GameWindow window;
 
     public Display(int width, int height){
         setTitle("Lucky Woodcutter");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setContentPane(new Window(width, height));
+        setContentPane(new GameWindow(width, height));
         pack();
         setLocationRelativeTo(null);
         setResizable(false);

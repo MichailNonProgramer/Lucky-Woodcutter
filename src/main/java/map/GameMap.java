@@ -1,29 +1,23 @@
 package map;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GameMap {
-    private static final int width = 2000;
-    private static final int height = 2000;
+    private static final int width = 1400;
+    private static final int height = 800;
 
-    public static ArrayList<Cell> getMapList() {
-        return mapList;
+    public static HashMap<Point, Cell> getMap() {
+        return map;
     }
 
-    private static ArrayList<Cell> mapList = spawnEmptyMap();
+    private static final HashMap<Point, Cell> map = spawnEmptyMap();
 
-    public static Cell getCell(int x, int y) {
-        return (Cell) mapList.stream().filter((cell) -> cell.getX() == x && cell.getY() == y);
-    }
-
-
-    public static ArrayList<Cell> spawnEmptyMap() {
-        var mapList = new ArrayList<Cell>();
+    public static HashMap<Point, Cell> spawnEmptyMap() {
+        var map = new HashMap<Point, Cell>();
         for (var x = 0; x < width / Cell.cellSize; x++)
             for (var y = 0; y < height / Cell.cellSize; y++) {
-                mapList.add(new Cell(x, y));
+                map.put(new Point(x, y), new Cell(x * Cell.cellSize, y * Cell.cellSize));
             }
-        System.out.println(mapList.size());
-        return mapList;
+        return map;
     }
 }

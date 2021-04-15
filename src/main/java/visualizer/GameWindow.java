@@ -35,7 +35,7 @@ public class GameWindow extends JPanel implements Runnable {
         while (running) {
             long time = System.currentTimeMillis();
             update();
-            draw();
+//            draw();
             time = (1000 / fps) - (System.currentTimeMillis() - time);
             if (time > 0) {
                 try {
@@ -50,14 +50,15 @@ public class GameWindow extends JPanel implements Runnable {
     private void input() {
     }
 
-    private void draw() {
+    private void draw(Graphics2D graphics2D) {
         Graphics graphics = this.getGraphics();
-        graphics.clearRect(0, 0, width, height);
         for (var entry : GameMap.spawnEmptyMap().values()) {
             var newX = entry.getX();
             var newY = entry.getY();
-            //graphics.drawImage(image, newX, newY, Cell.cellSize - 1, Cell.cellSize - 1, null);
+            graphics.drawImage(image, newX, newY, Cell.cellSize - 1, Cell.cellSize - 1, null);
         }
+        graphics2D.setColor(new Color(0, 0, 0));
+        graphics2D.fillRect(0, 0, width, height);
         graphics.drawImage(image, game.player.getX() *  Cell.cellSize, game.player.getY() *  Cell.cellSize, Cell.cellSize, Cell.cellSize, null);
         graphics.dispose();
     }
@@ -80,11 +81,11 @@ public class GameWindow extends JPanel implements Runnable {
     }
 
     public void render() {
-        draw();
         if (graphics2D != null) {
-            graphics2D.setColor(new Color(50, 250, 42));
+            graphics2D.setColor(new Color(0, 200, 0));
             graphics2D.fillRect(0, 0, width, height);
         }
+        draw(graphics2D);
     }
 
     public void update() {

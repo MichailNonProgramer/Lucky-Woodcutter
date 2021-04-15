@@ -28,6 +28,7 @@ public class KeyHandler implements KeyListener {
             var newDirection = getDirection(e);
             player.setDirection(newDirection);
             player.move(newDirection);
+            player.changeSprite();
         }
         if (key == KeyEvent.VK_SPACE) player.attack(e);
     }

@@ -13,6 +13,22 @@ public class Cell {
         this.point = new Point(x, y);
     }
 
+    public Cell(Point point) {
+        this.point = point;
+    }
+
+    public ArrayList<WorldGameObject> getObjectsInCell() {
+        return this.objectInCell;
+    }
+
+    public void addObjectInCell(WorldGameObject worldGameObject) {
+        objectInCell.add(worldGameObject);
+    }
+
+    public void removeObjectFromCell(WorldGameObject worldGameObject) {
+        objectInCell.remove(worldGameObject);
+    }
+
     public int getX() {
         return point.x;
     }

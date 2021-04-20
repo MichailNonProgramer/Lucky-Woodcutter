@@ -1,11 +1,12 @@
 package graphics;
 
 public enum DrawPriorities {
-    PLAYER (5),
+    PLAYER (2),
+    GROUND (10)
     // здесь дальше под все объекты
     ;
 
-    public int getPriority() {
+    public int getValue() {
         return priority;
     }
 

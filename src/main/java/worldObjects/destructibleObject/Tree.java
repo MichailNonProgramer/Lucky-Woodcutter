@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 
 public class Tree implements DestructibleObject{
     @Override
-    public DrawPriorities getPriority() {
+    public DrawPriorities getDrawPriority() {
         return null;
     }
 

@@ -10,6 +10,7 @@ public abstract class SpriteLoader {
         try {
             return ImageIO.read(new File(path));
         } catch (Exception e) {
+            System.out.println(e);
             return null;
         }
     }

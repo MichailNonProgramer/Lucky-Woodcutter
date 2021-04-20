@@ -1,9 +1,7 @@
 package game;
 
 import creatures.persons.player.Player;
-import map.Cell;
 import map.GameMap;
-import map.Point;
 
 public class Game {
     public Player player;

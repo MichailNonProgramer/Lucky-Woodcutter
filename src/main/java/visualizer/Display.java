@@ -1,13 +1,14 @@
 package visualizer;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferStrategy;
 
-public class Display  extends JFrame{
-    private BufferStrategy bufferStrategy;
+public class Display  extends JFrame {
+    private static BufferStrategy bufferStrategy;
     private GameWindow window;
 
-    public Display(int width, int height){
+    public Display(int width, int height) {
         setTitle("Lucky Woodcutter");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setContentPane(new GameWindow(width, height));
@@ -15,5 +16,15 @@ public class Display  extends JFrame{
         setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);
+//        createBufferStrategy(2);
+//        bufferStrategy = this.getBufferStrategy();
     }
+
+    public BufferStrategy getBufferStrategy() {
+        return bufferStrategy;
+    }
+
+    @Override
+    public void paint (Graphics g) {}
 }
+

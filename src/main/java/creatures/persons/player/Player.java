@@ -1,6 +1,7 @@
 package creatures.persons.player;
 
 import graphics.sprites.PlayerSprites;
+import map.Cell;
 import map.GameMap;
 import map.Point;
 import graphics.DrawPriorities;
@@ -13,24 +14,22 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Player extends Movable implements IPlayer {
     public Point getPoint() {
         return point;
     }
-
     private final Point point;
-
+    private HashMap<Point, Cell> activityArea = new HashMap<Point, Cell>();
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
-
     private Direction direction;
-
     public int getX() {
         return point.x;
     }
-
     public int getY() {
         return point.y;
     }
@@ -39,6 +38,7 @@ public class Player extends Movable implements IPlayer {
     public Player(int x, int y) {
         this.point = new Point(x, y);
         this.direction = Direction.DEFAULT;
+        this.spriteSheet = PlayerSprites.DOWN;
     }
 
     public Player(Point point) {
@@ -87,4 +87,10 @@ public class Player extends Movable implements IPlayer {
         }
     }
 
+    public HashMap<Point, Cell> getActivityArea() {
+        return activityArea;
+    }
+
+    public void changeActivityArea() {
+    }
 }

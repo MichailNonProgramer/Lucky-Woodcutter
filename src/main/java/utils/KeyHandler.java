@@ -36,7 +36,7 @@ public class KeyHandler implements KeyListener {
 //            System.out.println("LEFT " + player.visibleBounds[0].x + " " + player.visibleBounds[0].y);
 //            System.out.println("RIGHT " + player.visibleBounds[1].x + " " + player.visibleBounds[1].y);
         }
-        if (key == KeyEvent.VK_SPACE) player.attack(e);
+        if (key == KeyEvent.VK_SPACE) player.attack();
     }
 
     @Override

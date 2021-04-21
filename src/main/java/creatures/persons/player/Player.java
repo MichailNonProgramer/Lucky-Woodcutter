@@ -7,6 +7,8 @@ import map.Cell;
 import map.GameMap;
 import map.Point;
 import worldObjects.Movable;
+import worldObjects.destructibleObject.DestructibleObject;
+import worldObjects.destructibleObject.Tree;
 
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -71,7 +73,15 @@ public class Player extends Movable implements IPlayer {
         visibleCords = getVisibleCords();
     }
 
-    public void attack(KeyEvent e) {
+    public void attack() {
+        var cell = GameMap.getMap().get(this.point);
+        for (var worldGameObj : cell.getObjectsInCell()){
+            if (worldGameObj instanceof DestructibleObject){
+                ((DestructibleObject) worldGameObj).reduceLives();
+                if (((DestructibleObject) worldGameObj).getLives() == 0)
+                    cell.removeObjectFromCell(worldGameObj);
+            }
+        }
     }
 
     @Override

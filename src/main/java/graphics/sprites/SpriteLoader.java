@@ -3,15 +3,19 @@ package graphics.sprites;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 
 public abstract class SpriteLoader {
     protected static BufferedImage loadSprite(String path) {
         try {
             return ImageIO.read(new File(path));
         } catch (Exception e) {
-            System.out.println(e);
-            return null;
+            try {
+                return ImageIO.read(new File("src\\main\\java\\graphics\\images\\errors\\Error.png"));
+            }
+            catch (Exception exception){
+                System.out.println(e);
+                return null;
+            }
         }
     }
 }

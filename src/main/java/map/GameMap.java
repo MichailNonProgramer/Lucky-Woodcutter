@@ -2,6 +2,7 @@ package map;
 
 import config.Config;
 import worldObjects.Ground;
+import worldObjects.destructibleObject.Tree;
 
 import java.util.HashMap;
 
@@ -23,4 +24,5 @@ public class GameMap {
             }
         return map;
     }
+
 }

@@ -1,6 +1,7 @@
 package map;
 
 import config.Config;
+import creatures.persons.player.Player;
 import worldObjects.Ground;
 import worldObjects.destructibleObject.Tree;
 

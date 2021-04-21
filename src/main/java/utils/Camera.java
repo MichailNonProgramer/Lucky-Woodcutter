@@ -5,22 +5,22 @@ import creatures.persons.player.Player;
 import map.Cell;
 
 public class Camera {
-    public float getxOffset() {
+    public int getxOffset() {
         return xOffset;
     }
 
-    public float getyOffset() {
+    public int getyOffset() {
         return yOffset;
     }
 
-    private float xOffset, yOffset;
+    private int xOffset, yOffset;
 
-    public Camera(float xOffset, float yOffset) {
-        this.xOffset = xOffset;
-        this.yOffset = yOffset;
+    public Camera(int xOffset, int yOffset) {
+        this.xOffset = xOffset * Cell.cellSize;
+        this.yOffset = yOffset * Cell.cellSize;
     }
 
-    public void move(float xAmt, float yAmt) {
+    public void move(int xAmt, int yAmt) {
         xOffset += xAmt;
         yOffset += yAmt;
     }

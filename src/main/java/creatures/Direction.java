@@ -1,4 +1,4 @@
-package creatures.persons.player;
+package creatures;
 
 import map.Point;
 

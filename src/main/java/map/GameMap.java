@@ -1,21 +1,23 @@
 package map;
 
 import config.Config;
-import creatures.persons.player.Player;
 import worldObjects.Ground;
 import worldObjects.destructibleObject.Tree;
 
 import java.util.HashMap;
 
 public class GameMap {
-    public static HashMap<Point, Cell> getMap() {
+    public  HashMap<Point, Cell> getMap() {
         return map;
     }
 
-    private static final HashMap<Point, Cell> map = spawnEmptyMap();
+    private final HashMap<Point, Cell> map;
 
-    public static HashMap<Point, Cell> spawnEmptyMap() {
-        var map = new HashMap<Point, Cell>();
+    public GameMap(){
+        map = new HashMap<>();
+    }
+
+    public  HashMap<Point, Cell> spawnEmptyMap() {
         for (var x = 0; x < Config.getMapWidth() / Cell.cellSize; x++)
             for (var y = 0; y < Config.getMapHeight() / Cell.cellSize; y++) {
                 var newCell =  new Cell(x * Cell.cellSize, y * Cell.cellSize);
@@ -23,7 +25,18 @@ public class GameMap {
                 newCell.addObjectInCell(ground);
                 map.put(new Point(x, y), newCell);
             }
+        addTrees();
         return map;
     }
 
+    private void addTrees(){
+        for (var x = 0; x < Config.getMapWidth() / Cell.cellSize; x++)
+            for(var y = 0; y < Config.getMapHeight() / Cell.cellSize; y++){
+                var rnd = (int)Math.floor(Math.random()*(3));
+                if (rnd == 2){
+                    var tree = new Tree(new Point(x, y));
+                    map.get(tree.getPoint()).addObjectInCell(tree);
+                }
+            }
+    }
 }

@@ -2,6 +2,8 @@ package utils;
 
 import creatures.Direction;
 import creatures.persons.player.Player;
+import game.Game;
+import map.GameMap;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -9,8 +11,10 @@ import java.util.Arrays;
 
 public class KeyHandler implements KeyListener {
     private final Player player;
+    private final GameMap gameMap;
 
-    public KeyHandler(Player player) {
+    public KeyHandler(Player player, GameMap gameMap) {
+        this.gameMap = gameMap;
         this.player = player;
     }
 
@@ -28,9 +32,9 @@ public class KeyHandler implements KeyListener {
             var newDirection = getDirection(e);
             player.setDirection(newDirection);
             player.changeSprite();
-            player.move(newDirection);
+            player.move(newDirection, gameMap);
         }
-        if (key == KeyEvent.VK_SPACE) player.attack();
+        if (key == KeyEvent.VK_SPACE) player.attack(gameMap);
     }
 
     @Override

@@ -3,7 +3,6 @@ package visualizer;
 import config.Config;
 import game.Game;
 import map.Cell;
-import map.GameMap;
 import utils.KeyHandler;
 
 import javax.swing.*;
@@ -17,7 +16,7 @@ public class GameWindow extends JPanel implements Runnable {
     private BufferedImage bufferedImage;
     private Graphics2D graphics2D;
     private static Thread thread;
-    private final Game game = new Game();
+    private Game game;
 
     public GameWindow(int width, int height) {
         this.width = width;
@@ -25,6 +24,7 @@ public class GameWindow extends JPanel implements Runnable {
         setPreferredSize(new Dimension(width, height));
         setFocusable(true);
         requestFocus();
+        game = new Game();
 
     }
 
@@ -44,7 +44,7 @@ public class GameWindow extends JPanel implements Runnable {
         running = true;
         bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         graphics2D = bufferedImage.createGraphics();
-        this.addKeyListener(new KeyHandler(game.player));
+        this.addKeyListener(new KeyHandler(game.player, game.getGameMap()));
 
     }
 
@@ -58,7 +58,7 @@ public class GameWindow extends JPanel implements Runnable {
         graphics2D = bufferedImage.createGraphics();
         graphics2D.clearRect(0, 0, Config.getScreenWidth(), Config.getScreenHeight());
         for (var point : game.player.getVisibleCords()) {
-            Cell cell = GameMap.getMap().get(point);
+            Cell cell = game.getGameMap().getMap().get(point);
             if (cell != null) {
                 for (var worldObj : cell.getObjectsInCell()) {
                     graphics2D.drawImage(worldObj.getSpriteSheet(),

@@ -13,8 +13,9 @@ public abstract class SpriteLoader {
                 return ImageIO.read(new File("src\\main\\java\\graphics\\images\\errors\\Error.png"));
             }
             catch (Exception exception){
-                System.out.println(e);
+                System.out.println(e.getMessage());
                 return null;
+                // new BufferedImage c Error
             }
         }
     }

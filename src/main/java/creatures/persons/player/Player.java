@@ -63,21 +63,21 @@ public class Player extends Movable implements IPlayer {
         camera.centerOnPlayer(this);
     }
 
-    public void move(Direction dir) {
+    public void move(Direction dir, GameMap gameMap) {
         camera.move(dir.getPoint().x * Cell.cellSize,
                 dir.getPoint().y * Cell.cellSize);
 
-        var currentCell = GameMap.getMap().get(point);
+        var currentCell = gameMap.getMap().get(point);
         currentCell.removeObjectFromCell(this);
         point.add(dir.getPoint());
-        var newCell = GameMap.getMap().get(point);
+        var newCell = gameMap.getMap().get(point);
         newCell.addObjectInCell(this);
 
         this.visibleCords = updateVisibleCords();
     }
 
-    public void attack() {
-        var cell = GameMap.getMap().get(this.point);
+    public void attack(GameMap gameMap) {
+        var cell = gameMap.getMap().get(this.point);
         for (var worldGameObj : cell.getObjectsInCell()) {
             if (worldGameObj instanceof DestructibleObject) {
                 ((DestructibleObject) worldGameObj).reduceLives();

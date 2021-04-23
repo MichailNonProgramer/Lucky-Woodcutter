@@ -7,11 +7,21 @@ import worldObjects.destructibleObject.Tree;
 
 public class Game {
     public Player player;
+    private final GameMap gameMap = new GameMap();
 
     public Game(){
-        player = new Player(0, 0);
-        GameMap.getMap().get(player.getPoint()).addObjectInCell(player);
+        gameInit();
         var tree = new Tree(new Point(0 , 1));
-        GameMap.getMap().get(tree.getPoint()).addObjectInCell(tree);
+        gameMap.getMap().get(tree.getPoint()).addObjectInCell(tree);
+    }
+
+    public GameMap getGameMap(){
+        return gameMap;
+    }
+
+    private void gameInit(){
+        gameMap.spawnEmptyMap();
+        player = new Player(new Point(0, 0));
+        gameMap.getMap().get(player.getPoint()).addObjectInCell(player);
     }
 }

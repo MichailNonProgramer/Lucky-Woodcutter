@@ -1,25 +1,33 @@
 package creatures.persons.player;
 
-import config.Config;
 import creatures.Direction;
 import graphics.DrawPriorities;
 import graphics.sprites.PlayerSprites;
-import map.Cell;
 import map.GameMap;
 import map.Point;
+import map.area.HandsArea;
+import map.area.VisibleArea;
 import utils.Camera;
 import worldObjects.Movable;
 import worldObjects.destructibleObject.DestructibleObject;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 public class Player extends Movable implements IPlayer {
-    private final Point point;
+    private Point point;
     private Direction direction;
     private BufferedImage spriteSheet;
-    private ArrayList<Point> visibleCords;
     private final Camera camera;
+    private final VisibleArea visibleArea;
+    private final HandsArea handsArea;
+
+    public HandsArea getHandsArea() {
+        return handsArea;
+    }
+
+    public VisibleArea getVisibleArea() {
+        return visibleArea;
+    }
 
     public int getX() {
         return point.x;
@@ -27,10 +35,6 @@ public class Player extends Movable implements IPlayer {
 
     public int getY() {
         return point.y;
-    }
-
-    public ArrayList<Point> getVisibleCords() {
-        return visibleCords;
     }
 
     public Camera getCamera() {
@@ -49,35 +53,37 @@ public class Player extends Movable implements IPlayer {
         this.point = new Point(x, y);
         this.direction = Direction.DEFAULT;
         this.spriteSheet = PlayerSprites.DOWN;
-        this.visibleCords = updateVisibleCords();
-        camera = new Camera(x, y);
-        camera.centerOnPlayer(this);
+        this.visibleArea = new VisibleArea(x, y);
+        this.handsArea = new HandsArea(x, y);
+        this.camera = new Camera(x, y);
+        this.camera.centerOnPlayer(this);
     }
 
     public Player(Point point) {
         this.point = point;
         this.direction = Direction.DEFAULT;
         this.spriteSheet = PlayerSprites.DOWN;
-        this.visibleCords = updateVisibleCords();
-        camera = new Camera(point.x, point.y);
-        camera.centerOnPlayer(this);
+        this.visibleArea = new VisibleArea(point.x, point.y);
+        this.handsArea = new HandsArea(point.x, point.y);
+        this.camera = new Camera(point);
+        this.camera.centerOnPlayer(this);
     }
 
     public void move(Direction dir, GameMap gameMap) {
-        camera.move(dir.getPoint().x * Cell.cellSize,
-                dir.getPoint().y * Cell.cellSize);
+        camera.move(dir.getPoint());
 
         var currentCell = gameMap.getMap().get(point);
         currentCell.removeObjectFromCell(this);
-        point.add(dir.getPoint());
+        this.point = point.add(dir.getPoint());
         var newCell = gameMap.getMap().get(point);
         newCell.addObjectInCell(this);
 
-        this.visibleCords = updateVisibleCords();
+        this.handsArea.setUpdatedActiveCords(point);
+        this.visibleArea.setUpdatedActiveCords(point);
     }
 
-    public void attack(GameMap gameMap) {
-        var cell = gameMap.getMap().get(this.point);
+    public void attack(Point point, GameMap gameMap) {
+        var cell = gameMap.getMap().get(point);
         for (var worldGameObj : cell.getObjectsInCell()) {
             if (worldGameObj instanceof DestructibleObject) {
                 ((DestructibleObject) worldGameObj).reduceLives();
@@ -115,40 +121,4 @@ public class Player extends Movable implements IPlayer {
 
         }
     }
-
-    private ArrayList<Point> updateVisibleCords() {
-        var visibleBounds = generateVisibleBounds();
-        return generateVisibleCords(visibleBounds);
-    }
-
-    private ArrayList<Point> generateVisibleCords(Point[] visibleBounds) {
-        var arr = new ArrayList<Point>();
-        for (var i = visibleBounds[0].x; i < visibleBounds[1].x; i++)
-            for (var j = visibleBounds[0].y; j < visibleBounds[1].y; j++) {
-                arr.add(new Point(i, j));
-            }
-        return arr;
-    }
-
-    private Point[] generateVisibleBounds() {
-        return new Point[]{new Point(getLeftBoundX(), getLeftBoundY()),
-                new Point(getRightBoundX(), getRightBoundY())};
-    }
-
-    private int getLeftBoundX() {
-        return getX() - Config.getScreenWidth() / 2 / Cell.cellSize;
-    }
-
-    private int getLeftBoundY() {
-        return getY() - Config.getScreenHeight() / 2 / Cell.cellSize;
-    }
-
-    private int getRightBoundX() {
-        return getX() + Config.getScreenWidth() / 2 / Cell.cellSize + 1;
-    }
-
-    private int getRightBoundY() {
-        return getY() + Config.getScreenHeight() / 2 / Cell.cellSize + 1;
-    }
-
 }

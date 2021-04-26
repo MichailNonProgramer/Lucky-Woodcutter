@@ -5,15 +5,18 @@ import graphics.sprites.TreeSprites;
 import map.Point;
 
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
-public class Tree extends DestructibleObject{
+public class Tree extends DestructibleObject {
 
-    public Tree(Point point){
-        super(point, 3, TreeSprites.DAY);
+    public Tree(int x, int y) {
+        super(new Point(x, y), (int)(Math.random() * ((4 - 1) + 1)) + 1, TreeSprites.DAY);
     }
-    public Tree(int x, int y){
-        super(new Point(x, y), 3,TreeSprites.DAY);
+
+    public Tree(Point point) {
+        super(point,(int)(Math.random() * ((4 - 1) + 1)) + 1, TreeSprites.DAY);
     }
+
     @Override
     public DrawPriorities getDrawPriority() {
         return DrawPriorities.Tree;

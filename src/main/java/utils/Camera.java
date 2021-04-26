@@ -3,35 +3,37 @@ package utils;
 import config.Config;
 import creatures.persons.player.Player;
 import map.Cell;
+import map.Point;
 
 public class Camera {
-    public int getxOffset() {
-        return xOffset;
+    public int getXOffset() {
+        return offsets.x;
     }
 
-    public int getyOffset() {
-        return yOffset;
+    public int getYOffset() {
+        return offsets.y;
     }
 
-    private int xOffset, yOffset;
+    private Point offsets;
 
     public Camera(int xOffset, int yOffset) {
-        this.xOffset = xOffset * Cell.cellSize;
-        this.yOffset = yOffset * Cell.cellSize;
+        this.offsets = new Point(xOffset * Cell.cellSize,
+                yOffset * Cell.cellSize);
     }
 
-    public void move(int xAmt, int yAmt) {
-        xOffset += xAmt;
-        yOffset += yAmt;
+    public Camera(Point offsets) {
+        this.offsets = offsets.mul(Cell.cellSize);
+    }
+
+    public void move(Point cords) {
+        this.offsets = offsets.add(cords.mul(Cell.cellSize));
     }
 
     public void centerOnPlayer(Player player) {
-        xOffset = player.getX() * Cell.cellSize
-                - Config.getScreenWidth() / 2
-                + Cell.cellSize / 2;
-        yOffset = player.getY() * Cell.cellSize
-                - Config.getScreenHeight() / 2
-                + Cell.cellSize / 2;
+        this.offsets = new Point(player.getX() * Cell.cellSize
+                - Config.getScreenWidth() / 2 + Cell.cellSize / 2,
+                player.getY() * Cell.cellSize
+                        - Config.getScreenHeight() / 2 + Cell.cellSize / 2);
     }
 
 }

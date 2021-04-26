@@ -11,8 +11,8 @@ public class Game {
 
     public Game(){
         gameInit();
-        var tree = new Tree(new Point(0 , 1));
-        gameMap.getMap().get(tree.getPoint()).addObjectInCell(tree);
+//        var tree = new Tree(0, 1);
+//        gameMap.getMap().get(tree.getPoint()).addObjectInCell(tree);
     }
 
     public GameMap getGameMap(){
@@ -21,7 +21,7 @@ public class Game {
 
     private void gameInit(){
         gameMap.spawnEmptyMap();
-        player = new Player(new Point(0, 0));
+        player = new Player(0, 0);
         gameMap.getMap().get(player.getPoint()).addObjectInCell(player);
     }
 }

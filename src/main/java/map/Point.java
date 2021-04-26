@@ -9,9 +9,14 @@ public class Point {
         this.y = y;
     }
 
-    public void add(Point other) {
-        x += other.x;
-        y += other.y;
+    public Point add(Point other) {
+        var nx = x + other.x;
+        var ny = y + other.y;
+        return new Point(nx, ny);
+    }
+
+    public Point mul(int value) {
+        return new Point(x * value, y * value);
     }
 
     @Override

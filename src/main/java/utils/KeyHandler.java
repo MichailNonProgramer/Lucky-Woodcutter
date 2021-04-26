@@ -2,7 +2,6 @@ package utils;
 
 import creatures.Direction;
 import creatures.persons.player.Player;
-import game.Game;
 import map.GameMap;
 
 import java.awt.event.KeyEvent;
@@ -32,13 +31,19 @@ public class KeyHandler implements KeyListener {
             var newDirection = getDirection(e);
             player.setDirection(newDirection);
             player.changeSprite();
-            player.move(newDirection, gameMap);
+            if (!isOutOfBounds(newDirection))
+                player.move(newDirection, gameMap);
         }
-        if (key == KeyEvent.VK_SPACE) player.attack(gameMap);
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
+    }
+
+    public Boolean isOutOfBounds(Direction dir) {
+        var newPoint = player.getPoint().add(dir.getPoint());
+        var newCell = gameMap.getMap().get(newPoint);
+        return newCell == null;
     }
 
     public Direction getDirection(KeyEvent e) {

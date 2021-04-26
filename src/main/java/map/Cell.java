@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 
 public class Cell {
-    public static final int cellSize = 50;
+    public static final int cellSize = 70;
     private final Point point;
     private final ArrayList<WorldGameObject> objectsInCell = new ArrayList<>();
 

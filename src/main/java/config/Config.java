@@ -9,8 +9,8 @@ public class Config {
         return screenHeight;
     }
 
-    private static final int screenWidth = 1450;
-    private static final int screenHeight = 850;
+    private static final int screenWidth = 1470;
+    private static final int screenHeight = 910;
 
     public static int getMapWidth() {
         return mapWidth;
@@ -20,6 +20,6 @@ public class Config {
         return mapHeight;
     }
 
-    private static final int mapWidth = 1450;
-    private static final int mapHeight = 850;
+    private static final int mapWidth = 1470;
+    private static final int mapHeight = 910;
 }

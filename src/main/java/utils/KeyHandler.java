@@ -3,6 +3,7 @@ package utils;
 import creatures.Direction;
 import creatures.persons.player.Player;
 import map.GameMap;
+import worldObjects.Solid;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -31,7 +32,7 @@ public class KeyHandler implements KeyListener {
             var newDirection = getDirection(e);
             player.setDirection(newDirection);
             player.changeSprite();
-            if (!isOutOfBounds(newDirection))
+            if (isCanWalkTo(newDirection))
                 player.move(newDirection, gameMap);
         }
     }
@@ -40,11 +41,20 @@ public class KeyHandler implements KeyListener {
     public void keyReleased(KeyEvent e) {
     }
 
-    public Boolean isOutOfBounds(Direction dir) {
+    public Boolean isCanWalkTo(Direction dir) {
         var newPoint = player.getPoint().add(dir.getPoint());
         var newCell = gameMap.getMap().get(newPoint);
-        return newCell == null;
+        if (newCell == null)
+            return false;
+        else {
+            for (var ob : newCell.getObjectsInCell()) {
+                if (ob instanceof Solid)
+                    return false;
+            }
+        }
+        return  true;
     }
+
 
     public Direction getDirection(KeyEvent e) {
         var key = e.getKeyCode();

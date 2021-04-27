@@ -14,12 +14,12 @@ public class VisibleArea extends Area {
 
     public VisibleArea(int x, int y) {
         super(x, y);
-        setUpdatedActiveCords(new Point(x, y));
+        updateActiveCords();
     }
 
     public VisibleArea(Point cords) {
         super(cords);
-        setUpdatedActiveCords(cords);
+        updateActiveCords();
     }
 
 

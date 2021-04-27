@@ -33,6 +33,8 @@ public class KeyHandler implements KeyListener {
             var newDirection = getDirection(e);
             player.setDirection(newDirection);
             player.changeSprite();
+            player.getHandsArea().updateBounds(player.getDirection());
+            player.getHandsArea().updateActiveCords();
             if (oldDirection == newDirection)
                 if (isCanWalkTo(newDirection))
                     player.move(newDirection, gameMap);

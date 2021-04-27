@@ -1,5 +1,6 @@
 package map.area;
 
+import creatures.Direction;
 import map.Point;
 
 import java.util.ArrayList;
@@ -20,8 +21,12 @@ public abstract class Area {
         return activeCords;
     }
 
-    public void setUpdatedActiveCords(Point newCords) {
-        this.cords = newCords;
+    public void setUpdatedActiveCords(Point newObjectCords) {
+        this.cords = newObjectCords;
+        this.activeCords = spawnNewActiveCords();
+    }
+
+    public void updateActiveCords() {
         this.activeCords = spawnNewActiveCords();
     }
 
@@ -57,6 +62,8 @@ public abstract class Area {
         return new Point[]{new Point(getLeftBoundX(), getLeftBoundY()),
                 new Point(getRightBoundX(), getRightBoundY())};
     }
+
+    public abstract void updateBounds(Direction dir);
 
     protected abstract int getLeftBoundX();
 

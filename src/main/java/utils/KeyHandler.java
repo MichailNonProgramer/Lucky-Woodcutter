@@ -51,8 +51,8 @@ public class KeyHandler implements KeyListener {
                 if (ob instanceof Solid)
                     return false;
             }
+            return  true;
         }
-        return  true;
     }
 
 

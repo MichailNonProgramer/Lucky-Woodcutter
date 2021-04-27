@@ -10,17 +10,18 @@ public abstract class DestructibleObject implements WorldGameObject {
     private final Point point;
     private BufferedImage spriteSheet;
 
-    public DestructibleObject(Point point, int lives, BufferedImage spriteSheet){
+    public DestructibleObject(Point point, int lives, BufferedImage spriteSheet) {
         this.point = point;
         this.lives = lives;
         this.spriteSheet = spriteSheet;
     }
 
-    public int getLives(){
+    public int getLives() {
         return this.lives;
     }
-    public void reduceLives(){
-        this.lives -=1;
+
+    public void reduceLives() {
+        this.lives -= 1;
     }
 
     public Point getPoint() {

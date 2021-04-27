@@ -28,12 +28,14 @@ public class KeyHandler implements KeyListener {
         var moveEvents = Arrays.asList(KeyEvent.VK_A, KeyEvent.VK_D,
                 KeyEvent.VK_W, KeyEvent.VK_S);
         var key = e.getKeyCode();
+        var oldDirection = player.getDirection();
         if (moveEvents.contains(key)) {
             var newDirection = getDirection(e);
             player.setDirection(newDirection);
             player.changeSprite();
-            if (isCanWalkTo(newDirection))
-                player.move(newDirection, gameMap);
+            if (oldDirection == newDirection)
+                if (isCanWalkTo(newDirection))
+                    player.move(newDirection, gameMap);
         }
     }
 

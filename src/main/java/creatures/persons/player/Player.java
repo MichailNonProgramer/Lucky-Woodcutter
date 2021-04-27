@@ -45,13 +45,17 @@ public class Player extends Movable implements IPlayer {
         return point;
     }
 
+    public Direction getDirection() {
+        return direction;
+    }
+
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
 
     public Player(int x, int y) {
         this.point = new Point(x, y);
-        this.direction = Direction.DEFAULT;
+        this.direction = Direction.DOWN;
         this.spriteSheet = PlayerSprites.DOWN;
         this.visibleArea = new VisibleArea(x, y);
         this.handsArea = new HandsArea(x, y);
@@ -61,7 +65,7 @@ public class Player extends Movable implements IPlayer {
 
     public Player(Point point) {
         this.point = point;
-        this.direction = Direction.DEFAULT;
+        this.direction = Direction.DOWN;
         this.spriteSheet = PlayerSprites.DOWN;
         this.visibleArea = new VisibleArea(point.x, point.y);
         this.handsArea = new HandsArea(point.x, point.y);
@@ -118,7 +122,6 @@ public class Player extends Movable implements IPlayer {
             case RIGHT:
                 this.spriteSheet = PlayerSprites.RIGHT;
                 break;
-
         }
     }
 }

@@ -5,6 +5,7 @@ import map.GameMap;
 import map.Point;
 import worldObjects.destructibleObject.Tree;
 
+
 public class Game {
     public Player player;
     private final GameMap gameMap = new GameMap();

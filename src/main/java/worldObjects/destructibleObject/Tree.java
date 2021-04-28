@@ -6,16 +6,15 @@ import map.Point;
 import worldObjects.Solid;
 
 import java.awt.image.BufferedImage;
-import java.util.Random;
 
 public class Tree extends DestructibleObject implements Solid {
 
     public Tree(int x, int y) {
-        super(new Point(x, y), (int)(Math.random() * ((4 - 1) + 1)) + 1, TreeSprites.DAY);
+        super(new Point(x, y), (int)(Math.random() * ((4 - 1) + 1)) + 1, TreeSprites.DAY, Resource.Tree, 1);
     }
 
     public Tree(Point point) {
-        super(point,(int)(Math.random() * ((4 - 1) + 1)) + 1, TreeSprites.DAY);
+        super(point,(int)(Math.random() * ((4 - 1) + 1)) + 1, TreeSprites.DAY, Resource.Tree, 1);
     }
 
     @Override

@@ -1,23 +1,35 @@
 package utils;
 
-public class FPSCounter extends Thread{
-    private long lastTime;
-    private double fps;
+final public class FPSCounter extends Thread{
+    private static int startTime;
+    private static int endTime;
+    private static int frameTimes = 0;
+    private static short frames = 0;
 
-    public void run(){
-        while (true){
-            lastTime = System.nanoTime();
-            try{
-                Thread.sleep(1000);
-            }
-            catch (InterruptedException e){
-                System.out.println("fps Error");
-            }
-            fps = 1000000000.0 / (System.nanoTime() - lastTime);
-            lastTime = System.nanoTime();
-        }
+    /** Start counting the fps**/
+    public final static void StartCounter()
+    {
+        //get the current time
+        startTime = (int) System.currentTimeMillis();
     }
-    public double fps(){
-        return fps;
+
+    /**stop counting the fps and display it at the console*/
+    public final static void StopAndPost()
+    {
+        //get the current time
+        endTime = (int) System.currentTimeMillis();
+        //the difference between start and end times
+        frameTimes = frameTimes + endTime - startTime;
+        //count one frame
+        ++frames;
+        //if the difference is greater than 1 second (or 1000ms) post the results
+        if(frameTimes >= 1000)
+        {
+            //post results at the console
+            //System.out.println("FPS" + " " + Long.toString(frames));
+            //reset time differences and number of counted frames
+            frames = 0;
+            frameTimes = 0;
+        }
     }
 }

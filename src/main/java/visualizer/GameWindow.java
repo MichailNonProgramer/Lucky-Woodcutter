@@ -4,6 +4,7 @@ import config.Config;
 import game.Game;
 import graphics.sprites.EffectsSprites;
 import map.Cell;
+import utils.FPSCounter;
 import utils.KeyHandler;
 import utils.MouseHandler;
 
@@ -30,11 +31,28 @@ public class GameWindow extends JPanel implements Runnable {
 
     @Override
     public void run() {
+        long now;
+        long updateTime;
+        long wait;
 
+        final int TARGET_FPS = 60;
+        final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
         init();
         while (running) {
+            FPSCounter.StartCounter();
+            now = System.nanoTime();
             update();
+            updateTime = System.nanoTime() - now;
+            wait = (OPTIMAL_TIME - updateTime) / 1000000;
+
+            try {
+                Thread.sleep(wait);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            FPSCounter.StopAndPost();
         }
+
         setVisible(false);
     }
 

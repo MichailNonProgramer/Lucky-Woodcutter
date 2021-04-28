@@ -10,8 +10,10 @@ import map.area.VisibleArea;
 import utils.Camera;
 import worldObjects.Movable;
 import worldObjects.destructibleObject.DestructibleObject;
+import worldObjects.destructibleObject.Resource;
 
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 
 public class Player extends Movable implements IPlayer {
     private Point point;
@@ -20,6 +22,7 @@ public class Player extends Movable implements IPlayer {
     private final Camera camera;
     private final VisibleArea visibleArea;
     private final HandsArea handsArea;
+    private final HashMap<Resource, Integer> inventory;
 
     public HandsArea getHandsArea() {
         return handsArea;
@@ -61,6 +64,7 @@ public class Player extends Movable implements IPlayer {
         this.handsArea = new HandsArea(x, y);
         this.camera = new Camera(x, y);
         this.camera.centerOnPlayer(this);
+        this.inventory = new HashMap<Resource, Integer>();
     }
 
     public Player(Point point) {
@@ -71,6 +75,7 @@ public class Player extends Movable implements IPlayer {
         this.handsArea = new HandsArea(point.x, point.y);
         this.camera = new Camera(point);
         this.camera.centerOnPlayer(this);
+        this.inventory = new HashMap<Resource, Integer>();
     }
 
     public void move(Direction dir, GameMap gameMap) {
@@ -91,8 +96,14 @@ public class Player extends Movable implements IPlayer {
         for (var worldGameObj : cell.getObjectsInCell()) {
             if (worldGameObj instanceof DestructibleObject) {
                 ((DestructibleObject) worldGameObj).reduceLives();
-                if (((DestructibleObject) worldGameObj).getLives() == 0)
+                if (((DestructibleObject) worldGameObj).getLives() == 0) {
                     cell.removeObjectFromCell(worldGameObj);
+                    if (this.inventory.containsKey(((DestructibleObject) worldGameObj).getResource())) {
+                        this.inventory.put(((DestructibleObject) worldGameObj).getResource(), this.inventory.get(((DestructibleObject) worldGameObj).getResource())  + ((DestructibleObject) worldGameObj).getCountResource());
+                    } else
+                        this.inventory.put(((DestructibleObject) worldGameObj).getResource(), ((DestructibleObject) worldGameObj).getCountResource());
+                    System.out.println(1323 + " " + this.inventory);
+                }
             }
         }
     }

@@ -14,8 +14,8 @@ public abstract class SpriteLoader {
             }
             catch (Exception exception){
                 System.out.println(e.getMessage());
+                System.exit(1);
                 return null;
-                // new BufferedImage c Error
             }
         }
     }

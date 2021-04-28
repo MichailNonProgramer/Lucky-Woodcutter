@@ -8,12 +8,14 @@ import map.Point;
 import map.area.HandsArea;
 import map.area.VisibleArea;
 import utils.Camera;
+import utils.Inventory;
 import worldObjects.Movable;
+import worldObjects.Solid;
 import worldObjects.destructibleObject.DestructibleObject;
-import worldObjects.destructibleObject.Resource;
+import worldObjects.destructibleObject.Resources;
+import worldObjects.destructibleObject.WoodenWall;
 
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
 
 public class Player extends Movable implements IPlayer {
     private Point point;
@@ -22,7 +24,7 @@ public class Player extends Movable implements IPlayer {
     private final Camera camera;
     private final VisibleArea visibleArea;
     private final HandsArea handsArea;
-    private final HashMap<Resource, Integer> inventory;
+    private final Inventory inventory;
 
     public HandsArea getHandsArea() {
         return handsArea;
@@ -64,7 +66,7 @@ public class Player extends Movable implements IPlayer {
         this.handsArea = new HandsArea(x, y);
         this.camera = new Camera(x, y);
         this.camera.centerOnPlayer(this);
-        this.inventory = new HashMap<Resource, Integer>();
+        this.inventory = new Inventory();
     }
 
     public Player(Point point) {
@@ -75,7 +77,7 @@ public class Player extends Movable implements IPlayer {
         this.handsArea = new HandsArea(point.x, point.y);
         this.camera = new Camera(point);
         this.camera.centerOnPlayer(this);
-        this.inventory = new HashMap<Resource, Integer>();
+        this.inventory = new Inventory();
     }
 
     public void move(Direction dir, GameMap gameMap) {
@@ -98,12 +100,31 @@ public class Player extends Movable implements IPlayer {
                 ((DestructibleObject) worldGameObj).reduceLives();
                 if (((DestructibleObject) worldGameObj).getLives() == 0) {
                     cell.removeObjectFromCell(worldGameObj);
-                    if (this.inventory.containsKey(((DestructibleObject) worldGameObj).getResource())) {
-                        this.inventory.put(((DestructibleObject) worldGameObj).getResource(), this.inventory.get(((DestructibleObject) worldGameObj).getResource())  + ((DestructibleObject) worldGameObj).getCountResource());
-                    } else
-                        this.inventory.put(((DestructibleObject) worldGameObj).getResource(), ((DestructibleObject) worldGameObj).getCountResource());
-                    System.out.println(1323 + " " + this.inventory);
+                    inventory.addResources((DestructibleObject) worldGameObj);
+                    System.out.println("INVENTORY:" + " " + this.inventory.getContainer());
                 }
+            }
+        }
+    }
+
+    public void build(Point point, GameMap gameMap) {
+        var buildCost = 3;
+        var cell = gameMap.getMap().get(point);
+        var isCanBuild = true;
+        for (var worldGameObj : cell.getObjectsInCell()) {
+            if (worldGameObj instanceof Solid
+                    || worldGameObj instanceof DestructibleObject
+                    || worldGameObj instanceof IPlayer) {
+                isCanBuild = false;
+                break;
+            }
+        }
+        if (isCanBuild) {
+            if (inventory.getContainer().containsKey(Resources.Wood) && inventory.getContainer().get(Resources.Wood) >= buildCost) {
+                var wall = new WoodenWall(cell.getPoint());
+                cell.addObjectInCell(wall);
+                inventory.removeResources(wall,buildCost);
+                System.out.println("INVENTORY:" + " " + this.inventory.getContainer());
             }
         }
     }

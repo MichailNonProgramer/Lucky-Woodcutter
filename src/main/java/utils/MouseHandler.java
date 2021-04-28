@@ -5,6 +5,7 @@ import map.Cell;
 import map.GameMap;
 import map.Point;
 
+import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -49,10 +50,32 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
+        if (SwingUtilities.isLeftMouseButton(e)) {
+            handleLeftButton(e);
+        }
+        else if (SwingUtilities.isRightMouseButton(e)) {
+            handleRightButton(e);
+        }
+    }
+
+    private void handleRightButton(MouseEvent e) {
         Cell cell;
         try {
             cell = getCellByClick(e);
-            System.out.println(cell.getX() + " " + cell.getY() + "\t" + mouseX + " " + mouseY);
+            var rawPoint = cell.getPoint();
+            var buildingPoint = new Point(rawPoint.x / Cell.cellSize, rawPoint.y / Cell.cellSize);
+            player.build(buildingPoint, gameMap);
+        } catch (NullPointerException exception) {
+            System.out.println("OUT OF BOUNDS");
+        } catch (ConcurrentModificationException exception) {
+            System.out.println("THREAD ERROR, WILL FIX IT LATER");
+        }
+    }
+
+    private void handleLeftButton(MouseEvent e) {
+        Cell cell;
+        try {
+            cell = getCellByClick(e);
             var rawPoint = cell.getPoint();
             var attackedPoint = new Point(rawPoint.x / Cell.cellSize, rawPoint.y / Cell.cellSize);
             player.attack(attackedPoint, gameMap);
@@ -97,4 +120,5 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
     @Override
     public void mouseExited(MouseEvent e) {
     }
+
 }

@@ -3,7 +3,8 @@ package graphics;
 public enum DrawPriorities {
     PLAYER (2),
     GROUND (10),
-    Tree(9)
+    Tree(9),
+    Wall(9),
     // здесь дальше под все объекты
     ;
 

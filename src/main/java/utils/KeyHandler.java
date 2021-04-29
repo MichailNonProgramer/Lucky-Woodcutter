@@ -28,24 +28,19 @@ public class KeyHandler implements KeyListener {
         var moveEvents = Arrays.asList(KeyEvent.VK_A, KeyEvent.VK_D,
                 KeyEvent.VK_W, KeyEvent.VK_S);
         var key = e.getKeyCode();
-        var oldDirection = player.getDirection();
         if (moveEvents.contains(key)) {
-            var newDirection = getDirection(e);
-            player.setDirection(newDirection);
-            player.changeSprite();
-            player.getHandsArea().updateBounds(player.getDirection());
-            player.getHandsArea().updateActiveCords();
-            if (oldDirection == newDirection)
-                if (isCanWalkTo(newDirection))
-                    player.move(newDirection, gameMap);
+            var newDirection = getDirectionByKey(e);
+            if (isCanWalkTo(newDirection))
+                player.move(newDirection, gameMap);
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
+
     }
 
-    public Boolean isCanWalkTo(Direction dir) {
+    private Boolean isCanWalkTo(Direction dir) {
         var newPoint = player.getPoint().add(dir.getPoint());
         var newCell = gameMap.getMap().get(newPoint);
         if (newCell == null)
@@ -55,12 +50,12 @@ public class KeyHandler implements KeyListener {
                 if (ob instanceof Solid)
                     return false;
             }
-            return  true;
+            return true;
         }
     }
 
 
-    public Direction getDirection(KeyEvent e) {
+    private Direction getDirectionByKey(KeyEvent e) {
         var key = e.getKeyCode();
         switch (key) {
             case KeyEvent.VK_D:

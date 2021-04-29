@@ -63,7 +63,7 @@ public class Player extends Movable implements IPlayer {
         this.direction = Direction.DOWN;
         this.spriteSheet = PlayerSprites.DOWN;
         this.visibleArea = new VisibleArea(x, y);
-        this.handsArea = new HandsArea(x, y);
+        this.handsArea = new HandsArea(x, y, direction);
         this.camera = new Camera(x, y);
         this.camera.centerOnPlayer(this);
         this.inventory = new Inventory();
@@ -74,7 +74,7 @@ public class Player extends Movable implements IPlayer {
         this.direction = Direction.DOWN;
         this.spriteSheet = PlayerSprites.DOWN;
         this.visibleArea = new VisibleArea(point.x, point.y);
-        this.handsArea = new HandsArea(point.x, point.y);
+        this.handsArea = new HandsArea(point.x, point.y, direction);
         this.camera = new Camera(point);
         this.camera.centerOnPlayer(this);
         this.inventory = new Inventory();

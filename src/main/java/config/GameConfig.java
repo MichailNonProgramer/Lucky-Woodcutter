@@ -1,6 +1,6 @@
 package config;
 
-public class Config {
+public class GameConfig {
     public static int getScreenWidth() {
         return screenWidth;
     }
@@ -20,6 +20,6 @@ public class Config {
         return mapHeight;
     }
 
-    private static final int mapWidth = 1470;
-    private static final int mapHeight = 910;
+    private static final int mapWidth = 10500;
+    private static final int mapHeight = 10500;
 }

@@ -1,6 +1,6 @@
 package map;
 
-import config.Config;
+import config.GameConfig;
 import worldObjects.Ground;
 import worldObjects.destructibleObject.Tree;
 
@@ -18,8 +18,8 @@ public class GameMap {
     }
 
     public void spawnEmptyMap() {
-        for (var x = 0; x < Config.getMapWidth() / Cell.cellSize; x++)
-            for (var y = 0; y < Config.getMapHeight() / Cell.cellSize; y++) {
+        for (var x = 0; x < GameConfig.getMapWidth() / Cell.cellSize; x++)
+            for (var y = 0; y < GameConfig.getMapHeight() / Cell.cellSize; y++) {
                 var newCell = new Cell(x * Cell.cellSize, y * Cell.cellSize);
                 var ground = new Ground();
                 newCell.addObjectInCell(ground);
@@ -29,9 +29,9 @@ public class GameMap {
     }
 
     private void addTrees() {
-        for (var x = 0; x < Config.getMapWidth() / Cell.cellSize; x++)
-            for (var y = 0; y < Config.getMapHeight() / Cell.cellSize; y++) {
-                var rnd = (int) Math.floor(Math.random() * (3));
+        for (var x = 0; x < GameConfig.getMapWidth() / Cell.cellSize; x++)
+            for (var y = 0; y < GameConfig.getMapHeight() / Cell.cellSize; y++) {
+                var rnd = (int) Math.floor(Math.random() * (6));
                 if (rnd == 2) {
                     var tree = new Tree(x, y);
                     map.get(tree.getPoint()).addObjectInCell(tree);

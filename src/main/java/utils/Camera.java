@@ -1,6 +1,6 @@
 package utils;
 
-import config.Config;
+import config.GameConfig;
 import creatures.persons.player.Player;
 import map.Cell;
 import map.Point;
@@ -31,9 +31,9 @@ public class Camera {
 
     public void centerOnPlayer(Player player) {
         this.offsets = new Point(player.getX() * Cell.cellSize
-                - Config.getScreenWidth() / 2 + Cell.cellSize / 2,
+                - GameConfig.getScreenWidth() / 2 + Cell.cellSize / 2,
                 player.getY() * Cell.cellSize
-                        - Config.getScreenHeight() / 2 + Cell.cellSize / 2);
+                        - GameConfig.getScreenHeight() / 2 + Cell.cellSize / 2);
     }
 
 }

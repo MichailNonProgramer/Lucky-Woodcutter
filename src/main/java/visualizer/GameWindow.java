@@ -1,6 +1,6 @@
 package visualizer;
 
-import config.Config;
+import config.GameConfig;
 import game.Game;
 import graphics.sprites.EffectsSprites;
 import map.Cell;
@@ -77,7 +77,7 @@ public class GameWindow extends JPanel implements Runnable {
         }
 
         graphics2D = bufferedImage.createGraphics();
-        graphics2D.clearRect(0, 0, Config.getScreenWidth(), Config.getScreenHeight());
+        graphics2D.clearRect(0, 0, GameConfig.getScreenWidth(), GameConfig.getScreenHeight());
         for (var point : game.player.getVisibleArea().getActiveCords()) {
             Cell cell = game.getGameMap().getMap().get(point);
             if (cell != null) {

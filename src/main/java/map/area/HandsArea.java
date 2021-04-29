@@ -9,15 +9,41 @@ public class HandsArea extends Area {
     private int rxOffset;
     private int ryOffset;
 
-    public HandsArea(int x, int y) {
+    public HandsArea(int x, int y, Direction dir) {
         super(x, y);
-        updateOffsetsDown();
+        switch (dir) {
+            case UP:
+                updateOffsetsUp();
+                break;
+            case DOWN:
+                updateOffsetsDown();
+                break;
+            case RIGHT:
+                updateOffsetsRight();
+                break;
+            case LEFT:
+                updateOffsetsLeft();
+                break;
+        }
         updateActiveCords();
     }
 
-    public HandsArea(Point cords) {
+    public HandsArea(Point cords, Direction dir) {
         super(cords);
-        updateOffsetsDown();
+        switch (dir) {
+            case UP:
+                updateOffsetsUp();
+                break;
+            case DOWN:
+                updateOffsetsDown();
+                break;
+            case RIGHT:
+                updateOffsetsRight();
+                break;
+            case LEFT:
+                updateOffsetsLeft();
+                break;
+        }
         updateActiveCords();
     }
 

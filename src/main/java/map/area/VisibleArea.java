@@ -1,16 +1,16 @@
 package map.area;
 
-import config.Config;
+import config.GameConfig;
 import creatures.Direction;
 import map.Cell;
 import map.Point;
 
 
 public class VisibleArea extends Area {
-    private final int leftXBorderDist = Config.getScreenWidth() / 2 / Cell.cellSize;
-    private final int leftYBorderDist = Config.getScreenHeight() / 2 / Cell.cellSize;
-    private final int rightXBorderDist = Config.getScreenWidth() / 2 / Cell.cellSize + 1;
-    private final int rightYBorderDist = Config.getScreenHeight() / 2 / Cell.cellSize + 1;
+    private final int leftXBorderDist = GameConfig.getScreenWidth() / 2 / Cell.cellSize;
+    private final int leftYBorderDist = GameConfig.getScreenHeight() / 2 / Cell.cellSize;
+    private final int rightXBorderDist = GameConfig.getScreenWidth() / 2 / Cell.cellSize + 1;
+    private final int rightYBorderDist = GameConfig.getScreenHeight() / 2 / Cell.cellSize + 1;
 
     public VisibleArea(int x, int y) {
         super(x, y);

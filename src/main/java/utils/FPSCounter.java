@@ -7,14 +7,14 @@ final public class FPSCounter extends Thread{
     private static short frames = 0;
 
     /** Start counting the fps**/
-    public final static void StartCounter()
+    public static void StartCounter()
     {
         //get the current time
         startTime = (int) System.currentTimeMillis();
     }
 
     /**stop counting the fps and display it at the console*/
-    public final static void StopAndPost()
+    public static void StopAndPost()
     {
         //get the current time
         endTime = (int) System.currentTimeMillis();
@@ -26,7 +26,7 @@ final public class FPSCounter extends Thread{
         if(frameTimes >= 1000)
         {
             //post results at the console
-            //System.out.println("FPS" + " " + Long.toString(frames));
+            // System.out.println("FPS" + " " + Long.toString(frames));
             //reset time differences and number of counted frames
             frames = 0;
             frameTimes = 0;

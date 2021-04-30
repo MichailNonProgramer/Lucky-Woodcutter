@@ -1,6 +1,6 @@
-package utils;
+package gameLogic.handlers;
 
-import creatures.Direction;
+import utils.Direction;
 import creatures.persons.player.Player;
 import map.GameMap;
 import worldObjects.Solid;

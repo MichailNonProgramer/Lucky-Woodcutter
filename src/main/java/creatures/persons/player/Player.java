@@ -1,14 +1,14 @@
 package creatures.persons.player;
 
-import creatures.Direction;
+import utils.Direction;
 import graphics.DrawPriorities;
 import graphics.sprites.PlayerSprites;
 import map.GameMap;
-import map.Point;
-import map.area.HandsArea;
-import map.area.VisibleArea;
-import utils.Camera;
-import utils.Inventory;
+import utils.Point;
+import gameLogic.area.HandsArea;
+import gameLogic.area.VisibleArea;
+import gameLogic.Camera;
+import gameLogic.Inventory;
 import worldObjects.Movable;
 import worldObjects.Solid;
 import worldObjects.destructibleObject.DestructibleObject;
@@ -58,17 +58,6 @@ public class Player extends Movable implements IPlayer {
         this.direction = direction;
     }
 
-    public Player(int x, int y) {
-        this.point = new Point(x, y);
-        this.direction = Direction.DOWN;
-        this.spriteSheet = PlayerSprites.DOWN;
-        this.visibleArea = new VisibleArea(x, y);
-        this.handsArea = new HandsArea(x, y, direction);
-        this.camera = new Camera(x, y);
-        this.camera.centerOnPlayer(this);
-        this.inventory = new Inventory();
-    }
-
     public Player(Point point) {
         this.point = point;
         this.direction = Direction.DOWN;
@@ -78,6 +67,10 @@ public class Player extends Movable implements IPlayer {
         this.camera = new Camera(point);
         this.camera.centerOnPlayer(this);
         this.inventory = new Inventory();
+    }
+
+    public Player(int x, int y) {
+        this(new Point(x, y));
     }
 
     public void move(Direction dir, GameMap gameMap) {

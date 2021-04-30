@@ -1,11 +1,12 @@
-package utils;
+package gameLogic.handlers;
 
-import creatures.Direction;
+import utils.Direction;
 import creatures.persons.player.Player;
 import map.Cell;
 import map.GameMap;
-import map.Point;
-import map.area.HandsArea;
+import utils.Point;
+import gameLogic.area.Area;
+import gameLogic.area.HandsArea;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;
@@ -76,7 +77,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
     }
 
     private void changeViewDirection(Direction assumedDirection,
-                                     HandsArea area,
+                                     Area area,
                                      Point rawSelectedPoint,
                                      Point point1,
                                      Point point2,

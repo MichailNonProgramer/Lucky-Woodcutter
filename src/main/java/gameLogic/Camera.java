@@ -1,9 +1,9 @@
-package utils;
+package gameLogic;
 
 import config.GameConfig;
 import creatures.persons.player.Player;
 import map.Cell;
-import map.Point;
+import utils.Point;
 
 public class Camera {
     public int getXOffset() {
@@ -17,8 +17,7 @@ public class Camera {
     private Point offsets;
 
     public Camera(int xOffset, int yOffset) {
-        this.offsets = new Point(xOffset * Cell.cellSize,
-                yOffset * Cell.cellSize);
+        this(new Point(xOffset, yOffset));
     }
 
     public Camera(Point offsets) {

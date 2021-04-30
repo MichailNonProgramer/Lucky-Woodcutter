@@ -1,6 +1,6 @@
 package worldObjects;
 
-import creatures.Direction;
+import utils.Direction;
 
 public abstract class Movable implements WorldGameObject {
     // метод для перемещения по направлению

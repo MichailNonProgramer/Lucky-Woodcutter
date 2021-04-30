@@ -1,4 +1,4 @@
-package utils;
+package gameLogic;
 
 import worldObjects.destructibleObject.DestructibleObject;
 import worldObjects.destructibleObject.Resources;

@@ -5,8 +5,8 @@ import game.Game;
 import graphics.sprites.EffectsSprites;
 import map.Cell;
 import utils.FPSCounter;
-import utils.KeyHandler;
-import utils.MouseHandler;
+import gameLogic.handlers.KeyHandler;
+import gameLogic.handlers.MouseHandler;
 
 import javax.swing.*;
 import java.awt.*;

@@ -2,8 +2,6 @@ package game;
 
 import creatures.persons.player.Player;
 import map.GameMap;
-import map.Point;
-import worldObjects.destructibleObject.Tree;
 
 
 public class Game {

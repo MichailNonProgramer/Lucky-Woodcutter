@@ -1,9 +1,9 @@
-package map.area;
+package gameLogic.area;
 
 import config.GameConfig;
-import creatures.Direction;
+import utils.Direction;
 import map.Cell;
-import map.Point;
+import utils.Point;
 
 
 public class VisibleArea extends Area {
@@ -13,8 +13,7 @@ public class VisibleArea extends Area {
     private final int rightYBorderDist = GameConfig.getScreenHeight() / 2 / Cell.cellSize + 1;
 
     public VisibleArea(int x, int y) {
-        super(x, y);
-        updateActiveCords();
+        this(new Point(x, y));
     }
 
     public VisibleArea(Point cords) {

@@ -1,7 +1,7 @@
-package map.area;
+package gameLogic.area;
 
-import creatures.Direction;
-import map.Point;
+import utils.Direction;
+import utils.Point;
 
 import java.util.ArrayList;
 
@@ -35,8 +35,7 @@ public abstract class Area {
     }
 
     public Area(int x, int y) {
-        this.cords = new Point(x, y);
-        this.activeCords = spawnNewActiveCords();
+        this(new Point(x, y));
     }
 
     public Area(Point cords) {

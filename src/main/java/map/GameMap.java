@@ -1,6 +1,7 @@
 package map;
 
 import config.GameConfig;
+import utils.Point;
 import worldObjects.Ground;
 import worldObjects.destructibleObject.Tree;
 

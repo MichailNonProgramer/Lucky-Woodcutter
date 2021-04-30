@@ -1,6 +1,6 @@
 package worldObjects.destructibleObject;
 
-import map.Point;
+import utils.Point;
 import worldObjects.WorldGameObject;
 
 import java.awt.image.BufferedImage;

@@ -2,7 +2,7 @@ package worldObjects.destructibleObject;
 
 import graphics.DrawPriorities;
 import graphics.sprites.TreeSprites;
-import map.Point;
+import utils.Point;
 import worldObjects.Solid;
 
 import java.awt.image.BufferedImage;
@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 public class Tree extends DestructibleObject implements Solid {
 
     public Tree(int x, int y) {
-        super(new Point(x, y), (int)(Math.random() * ((4 - 1) + 1)) + 1, TreeSprites.DAY, Resources.Wood, 1);
+        this(new Point(x, y));
     }
 
     public Tree(Point point) {

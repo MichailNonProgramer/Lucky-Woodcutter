@@ -1,7 +1,8 @@
-package utils;
+package gameLogic.handlers;
 
-import map.Point;
+import utils.Point;
 
+// нужны для вырезания клеток, на которых могут быть коллизии, связанные с направлением движения
 public class ViewDirectionsConfig {
     public static final Point upDown1 = new Point(-1, 0);
     public static final Point upDown2 = new Point(0, 0);

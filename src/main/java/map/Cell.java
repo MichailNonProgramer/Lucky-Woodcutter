@@ -1,5 +1,6 @@
 package map;
 
+import utils.Point;
 import worldObjects.WorldGameObject;
 
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ public class Cell {
     private final ArrayList<WorldGameObject> objectsInCell = new ArrayList<>();
 
     public Cell(int x, int y)   {
-        this.point = new Point(x, y);
+        this(new Point(x, y));
     }
 
     public Cell(Point point)   {

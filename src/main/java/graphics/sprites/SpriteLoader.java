@@ -10,7 +10,7 @@ public abstract class SpriteLoader {
             return ImageIO.read(new File(path));
         } catch (Exception e) {
             try {
-                return ImageIO.read(new File("src\\main\\java\\graphics\\images\\errors\\Error.png"));
+                return ImageIO.read(new File("src\\main\\images\\errors\\Error.png"));
             }
             catch (Exception exception){
                 System.out.println(e.getMessage());

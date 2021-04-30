@@ -1,7 +1,7 @@
-package map.area;
+package gameLogic.area;
 
-import creatures.Direction;
-import map.Point;
+import utils.Direction;
+import utils.Point;
 
 public class HandsArea extends Area {
     private int lxOffset;
@@ -10,22 +10,7 @@ public class HandsArea extends Area {
     private int ryOffset;
 
     public HandsArea(int x, int y, Direction dir) {
-        super(x, y);
-        switch (dir) {
-            case UP:
-                updateOffsetsUp();
-                break;
-            case DOWN:
-                updateOffsetsDown();
-                break;
-            case RIGHT:
-                updateOffsetsRight();
-                break;
-            case LEFT:
-                updateOffsetsLeft();
-                break;
-        }
-        updateActiveCords();
+        this(new Point(x, y), dir);
     }
 
     public HandsArea(Point cords, Direction dir) {

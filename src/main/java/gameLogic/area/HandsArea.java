@@ -9,26 +9,15 @@ public class HandsArea extends Area {
     private int rxOffset;
     private int ryOffset;
 
+    private final int attackLength = 2;
+
     public HandsArea(int x, int y, Direction dir) {
         this(new Point(x, y), dir);
     }
 
     public HandsArea(Point cords, Direction dir) {
         super(cords);
-        switch (dir) {
-            case UP:
-                updateOffsetsUp();
-                break;
-            case DOWN:
-                updateOffsetsDown();
-                break;
-            case RIGHT:
-                updateOffsetsRight();
-                break;
-            case LEFT:
-                updateOffsetsLeft();
-                break;
-        }
+        updateBounds(dir);
         updateActiveCords();
     }
 
@@ -53,7 +42,7 @@ public class HandsArea extends Area {
 
     protected void updateOffsetsUp() {
         this.lxOffset = -1;
-        this.lyOffset = -2;
+        this.lyOffset = -attackLength;
         this.rxOffset = 2;
         this.ryOffset = 1;
     }
@@ -62,11 +51,11 @@ public class HandsArea extends Area {
         this.lxOffset = -1;
         this.lyOffset = 0;
         this.rxOffset = 2;
-        this.ryOffset = 3;
+        this.ryOffset = attackLength + 1;
     }
 
     protected void updateOffsetsLeft() {
-        this.lxOffset = -2;
+        this.lxOffset = -attackLength;
         this.lyOffset = -1;
         this.rxOffset = 1;
         this.ryOffset = 2;
@@ -75,7 +64,7 @@ public class HandsArea extends Area {
     protected void updateOffsetsRight() {
         this.lxOffset = 0;
         this.lyOffset = -1;
-        this.rxOffset = 3;
+        this.rxOffset = attackLength + 1;
         this.ryOffset = 2;
     }
 

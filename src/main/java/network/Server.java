@@ -1,46 +1,48 @@
 package network;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.ServerSocket;
+import java.io.*;
 import java.net.Socket;
-import java.util.Date;
 
-public class Server
+public class Server extends Thread
 {
-    public static void main(String[] args) throws Exception
-    {
-        ServerSocket listener = new ServerSocket(4000);
-        String line;
-        try
-        {
-            while (true)
-            {
-                Socket socket = listener.accept();
-                BufferedReader readerChannel = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                BufferedWriter writerChannel = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-                try
-                {
-                    writerChannel.write(new Date().toString() + "\n\r");
-                    writerChannel.flush();
+    private Socket socket;
+    private BufferedReader in;
+    private PrintWriter out;
 
-                    while ((line = readerChannel.readLine()) != null)
-                    {
-                        System.out.println(line);
-                        System.out.println("server");
-                    }
-                }
-                finally
-                {
-                    socket.close();
-                }
+    public Server(Socket s) throws IOException {
+        socket = s;
+        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        // Включаем автоматическое выталкивание:
+        out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket
+                .getOutputStream())), true);
+        // Если любой из вышеприведенных вызовов приведет к
+        // возникновению исключения, то вызывающий отвечает за
+        // закрытие сокета. В противном случае, нить
+        // закроет его.
+        start(); // вызываем run()
+    }
+
+    public void run() {
+        try {
+            while (true) {
+                String str = in.readLine();
+                if (str.equals("END"))
+                    break;
+                System.out.println("Echoing: " + str);
+                out.println(str);
             }
+            System.out.println("closing...");
         }
-        finally
-        {
-            listener.close();
+        catch (IOException e) {
+            System.err.println("IO Exception");
+        }
+        finally {
+            try {
+                socket.close();
+            }
+            catch (IOException e) {
+                System.err.println("Socket not closed");
+            }
         }
     }
 }

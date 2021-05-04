@@ -4,4 +4,5 @@ import java.awt.image.BufferedImage;
 
 public class WoodenWallSprites extends SpriteLoader{
     public static BufferedImage DAY = loadSprite("src\\main\\images\\walls\\WOODENWALL.png");
+    public static BufferedImage NIGHT = loadSprite("src\\main\\images\\walls\\WOODENWALL.png");
 }

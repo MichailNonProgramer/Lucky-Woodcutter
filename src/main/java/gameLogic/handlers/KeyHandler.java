@@ -4,6 +4,7 @@ import utils.Direction;
 import creatures.persons.player.Player;
 import map.GameMap;
 import worldObjects.Solid;
+import worldObjects.destructibleObject.Resources;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -32,6 +33,13 @@ public class KeyHandler implements KeyListener {
             var newDirection = getDirectionByKey(e);
             if (isCanWalkTo(newDirection))
                 player.move(newDirection, gameMap);
+        }
+        if (e.getKeyCode() == KeyEvent.VK_F) {
+            if (player.getActiveResource() == Resources.Wood) {
+                player.setActiveResource(Resources.Stone);
+            } else {
+                player.setActiveResource(Resources.Wood);
+            }
         }
     }
 

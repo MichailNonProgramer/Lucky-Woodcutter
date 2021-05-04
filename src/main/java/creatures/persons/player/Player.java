@@ -9,13 +9,16 @@ import gameLogic.area.HandsArea;
 import gameLogic.area.VisibleArea;
 import gameLogic.Camera;
 import gameLogic.Inventory;
+import weapons.Weapons;
 import worldObjects.Movable;
 import worldObjects.Solid;
 import worldObjects.destructibleObject.DestructibleObject;
 import worldObjects.destructibleObject.Resources;
+import worldObjects.destructibleObject.StoneWall;
 import worldObjects.destructibleObject.WoodenWall;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class Player extends Movable implements IPlayer {
     private Point point;
@@ -25,6 +28,9 @@ public class Player extends Movable implements IPlayer {
     private final VisibleArea visibleArea;
     private final HandsArea handsArea;
     private final Inventory inventory;
+    private Resources activeResource;
+    private ArrayList<Weapons> weapons;
+    private Weapons activeWeapon;
 
     public HandsArea getHandsArea() {
         return handsArea;
@@ -58,6 +64,14 @@ public class Player extends Movable implements IPlayer {
         this.direction = direction;
     }
 
+    public Resources getActiveResource() {
+        return activeResource;
+    }
+
+    public void setActiveResource(Resources activeResource) {
+        this.activeResource = activeResource;
+    }
+
     public Player(Point point) {
         this.point = point;
         this.direction = Direction.DOWN;
@@ -67,6 +81,7 @@ public class Player extends Movable implements IPlayer {
         this.camera = new Camera(point);
         this.camera.centerOnPlayer(this);
         this.inventory = new Inventory();
+        this.activeResource = Resources.Wood;
     }
 
     public Player(int x, int y) {
@@ -113,8 +128,19 @@ public class Player extends Movable implements IPlayer {
             }
         }
         if (isCanBuild) {
-            if (inventory.getContainer().containsKey(Resources.Wood) && inventory.getContainer().get(Resources.Wood) >= buildCost) {
-                var wall = new WoodenWall(cell.getPoint());
+            if (inventory.getContainer().containsKey(activeResource) && inventory.getContainer().get(activeResource) >= buildCost) {
+                DestructibleObject wall;
+                switch (activeResource) {
+                    case Wood:
+                        wall = new WoodenWall(cell.getPoint());
+                        break;
+                    case Stone:
+                        wall = new StoneWall(cell.getPoint());
+                        break;
+                    default:
+                        throw new IllegalStateException("Unexpected value: " + activeResource);
+                }
+
                 cell.addObjectInCell(wall);
                 inventory.removeResources(wall,buildCost);
                 System.out.println("INVENTORY:" + " " + this.inventory.getContainer());

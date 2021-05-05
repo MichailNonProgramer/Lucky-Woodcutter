@@ -6,9 +6,10 @@ import worldObjects.Ground;
 import worldObjects.destructibleObject.Boulder;
 import worldObjects.destructibleObject.Tree;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class GameMap {
+public class GameMap implements Serializable {
     public HashMap<Point, Cell> getMap() {
         return map;
     }

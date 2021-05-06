@@ -21,9 +21,10 @@ public class GameWindow extends JPanel implements Runnable {
     private static Thread thread;
     private Game game;
 
-    public GameWindow(int width, int height) {
+    public GameWindow(int width, int height, Game game) {
         this.width = width;
         this.height = height;
+        this.game = game;
         setPreferredSize(new Dimension(width, height));
         setFocusable(true);
         requestFocus();
@@ -59,7 +60,6 @@ public class GameWindow extends JPanel implements Runnable {
 
     public void init() {
         addNotify();
-        game = new Game();
         running = true;
         bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         graphics2D = bufferedImage.createGraphics();

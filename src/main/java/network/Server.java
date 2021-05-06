@@ -1,20 +1,27 @@
 package network;
 
+import map.Cell;
+import map.GameMap;
+import utils.Point;
+
 import java.io.*;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Server extends Thread
 {
-    private Socket socket;
-    private BufferedReader in;
-    private PrintWriter out;
+    private final Socket socket;
+    private final ObjectInputStream in;
+    private final ObjectOutputStream out;
+    private GameMap gameMap;
+    private HashMap<Point, Cell> map;
 
-    public Server(Socket s) throws IOException {
-        socket = s;
-        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        // Включаем автоматическое выталкивание:
-        out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket
-                .getOutputStream())), true);
+    public Server(Socket s, GameMap gameMap) throws IOException {
+        this.socket = s;
+        this.gameMap = gameMap;
+        in = new ObjectInputStream(s.getInputStream());
+        out = new ObjectOutputStream((s.getOutputStream()));
         // Если любой из вышеприведенных вызовов приведет к
         // возникновению исключения, то вызывающий отвечает за
         // закрытие сокета. В противном случае, нить
@@ -24,16 +31,12 @@ public class Server extends Thread
 
     public void run() {
         try {
-            while (true) {
-                String str = in.readLine();
-                if (str.equals("END"))
-                    break;
-                System.out.println("Echoing: " + str);
-                out.println(str);
-            }
-            System.out.println("closing...");
+                map = (HashMap<Point, Cell>) in.readObject();
+                synchronizedGameMap();
+                for (Server player : MultiServer.players)
+                    MultiServer.send(gameMap, player.out);
         }
-        catch (IOException e) {
+        catch (IOException | ClassNotFoundException e) {
             System.err.println("IO Exception");
         }
         finally {
@@ -43,6 +46,15 @@ public class Server extends Thread
             catch (IOException e) {
                 System.err.println("Socket not closed");
             }
+        }
+    }
+
+    private void synchronizedGameMap(){
+        for (Map.Entry<Point, Cell> pointCellEntry : map.entrySet()) {
+            var point = (Point) ((Map.Entry) pointCellEntry).getKey();
+            var cell = (Cell) ((Map.Entry) pointCellEntry).getValue();
+            if (!gameMap.getMap().get(point).equals(cell))
+                gameMap.getMap().put(point, cell);
         }
     }
 }

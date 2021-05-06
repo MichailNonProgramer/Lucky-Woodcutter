@@ -1,16 +1,28 @@
 package network;
 
 import creatures.persons.player.Player;
+import map.Cell;
+import map.GameMap;
+import utils.Point;
 
 import java.io.*;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.HashMap;
 
 
 public class Client {
+    private GameMap gameMap;
+    private HashMap<Point, Cell> map;
 
-    public static void main(String[] args) throws IOException {
+    private Client(){
+
+    }
+
+
+    public void start() throws IOException {
         // Передаем null в getByName(), получая
         // специальный IP адрес "локальной заглушки"
         // для тестирования на машине без сети:
@@ -38,8 +50,9 @@ public class Client {
                 System.out.println(str);
             }
             out.println("END");
-        }
-        finally {
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
             System.out.println("closing...");
             socket.close();
         }

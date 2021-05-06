@@ -18,9 +18,10 @@ import worldObjects.destructibleObject.StoneWall;
 import worldObjects.destructibleObject.WoodenWall;
 
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Player extends Movable implements IPlayer {
+public class Player extends Movable implements IPlayer, Serializable {
     private Point point;
     private Direction direction;
     private BufferedImage spriteSheet;

@@ -5,7 +5,10 @@ import creatures.persons.player.Player;
 import map.Cell;
 import utils.Point;
 
-public class Camera {
+import java.io.Serializable;
+
+public class Camera implements Serializable {
+    private static final long serialVersionUID = 1L;
     public int getXOffset() {
         return offsets.x;
     }

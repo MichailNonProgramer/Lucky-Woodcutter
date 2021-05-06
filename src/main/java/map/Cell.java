@@ -11,6 +11,7 @@ public class Cell implements Serializable {
     public static final int cellSize = 70;
     private final Point point;
     private final ArrayList<WorldGameObject> objectsInCell = new ArrayList<>();
+    private static final long serialVersionUID = 1L;
 
     public Cell(int x, int y)   {
         this(new Point(x, y));

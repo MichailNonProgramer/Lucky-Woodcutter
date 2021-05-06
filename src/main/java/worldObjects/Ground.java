@@ -6,11 +6,12 @@ import graphics.sprites.GroundSprites;
 import java.awt.image.BufferedImage;
 
 public class Ground implements WorldGameObject {
-    private BufferedImage spriteSheet;
+    private transient BufferedImage spriteSheet;
 
     public Ground() {
         this.spriteSheet = GroundSprites.DAY;
     }
+    private static final long serialVersionUID = 1L;
 
     @Override
     public DrawPriorities getDrawPriority() {

@@ -3,12 +3,14 @@ package gameLogic;
 import worldObjects.destructibleObject.DestructibleObject;
 import worldObjects.destructibleObject.Resources;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class Inventory {
+public class Inventory implements Serializable {
     public HashMap<Resources, Integer> getContainer() {
         return container;
     }
+    private static final long serialVersionUID = 1L;
 
     private final HashMap<Resources, Integer> container;
 

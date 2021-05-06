@@ -17,20 +17,23 @@ public class MultiServer {
 //        this.gameMap = new GameMap();
 //    }
 
-    public void start() throws IOException {
+    public static void main(String[] args) throws IOException {
+        gameMap.spawnEmptyMap();
         ServerSocket s = new ServerSocket(Common.PORT);
         System.out.println("Server Started");
         try {
             while (true) {
                 // Блокируется до возникновения нового соединения:
                 Socket socket = s.accept();
+                System.out.println(321);
                 try {
                     players.add(new Server(socket, gameMap));
-                } catch (IOException e) {
+                } catch (IOException | ClassNotFoundException e) {
                     // Если завершится неудачей, закрывается сокет,
                     // в противном случае, нить закроет его:
                     socket.close();
                 }
+                System.out.println(123);
             }
         } finally {
             s.close();

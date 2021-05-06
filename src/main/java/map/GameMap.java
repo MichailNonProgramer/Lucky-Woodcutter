@@ -15,6 +15,7 @@ public class GameMap implements Serializable {
     }
 
     private final HashMap<Point, Cell> map;
+    private static final long serialVersionUID = 1L;
 
     public GameMap() {
         map = new HashMap<>();

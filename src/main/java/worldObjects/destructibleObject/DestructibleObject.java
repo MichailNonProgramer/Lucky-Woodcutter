@@ -8,9 +8,10 @@ import java.awt.image.BufferedImage;
 public abstract class DestructibleObject implements WorldGameObject {
     private int lives;
     private final Point point;
-    private BufferedImage spriteSheet;
+    private transient BufferedImage spriteSheet;
     private final Resources resourceName;
     private final int resourcesCount;
+    private static final long serialVersionUID = 1L;
 
     public DestructibleObject(Point point, int lives, BufferedImage spriteSheet, Resources resourceName, int resourcesCount) {
         this.point = point;

@@ -4,6 +4,7 @@ import config.GameConfig;
 import game.Game;
 import graphics.sprites.EffectsSprites;
 import map.Cell;
+import network.Client;
 import utils.FPSCounter;
 import gameLogic.handlers.KeyHandler;
 import gameLogic.handlers.MouseHandler;
@@ -20,6 +21,7 @@ public class GameWindow extends JPanel implements Runnable {
     private Graphics2D graphics2D;
     private static Thread thread;
     private Game game;
+    private Client client;
 
     public GameWindow(int width, int height, Game game) {
         this.width = width;
@@ -78,29 +80,32 @@ public class GameWindow extends JPanel implements Runnable {
 
         graphics2D = bufferedImage.createGraphics();
         graphics2D.clearRect(0, 0, GameConfig.getScreenWidth(), GameConfig.getScreenHeight());
-        for (var point : game.player.getVisibleArea().getActiveCords()) {
+        for (var player : game.players){
+        for (var point : player.getVisibleArea().getActiveCords()) {
             Cell cell = game.getGameMap().getMap().get(point);
             if (cell != null) {
                 for (var worldObj : cell.getObjectsInCell()) {
                     graphics2D.drawImage(worldObj.getSpriteSheet(),
-                            cell.getX() - game.player.getCamera().getXOffset(),
-                            cell.getY() - game.player.getCamera().getYOffset(),
+                            cell.getX() - player.getCamera().getXOffset(),
+                            cell.getY() - player.getCamera().getYOffset(),
                             Cell.cellSize, Cell.cellSize, null);
                 }
             }
+        }
 
         }
         // отрисовка активной области игрока
-        for (var point : game.player.getHandsArea().getActiveCords()) {
-            Cell cell = game.getGameMap().getMap().get(point);
-            if (cell != null) {
-                graphics2D.drawImage(EffectsSprites.ACTIVE,
-                        cell.getX() - game.player.getCamera().getXOffset(),
-                        cell.getY() - game.player.getCamera().getYOffset(),
-                        Cell.cellSize, Cell.cellSize, null);
+        for (var player: game.players) {
+            for (var point : player.getHandsArea().getActiveCords()) {
+                Cell cell = game.getGameMap().getMap().get(point);
+                if (cell != null) {
+                    graphics2D.drawImage(EffectsSprites.ACTIVE,
+                            cell.getX() - player.getCamera().getXOffset(),
+                            cell.getY() - player.getCamera().getYOffset(),
+                            Cell.cellSize, Cell.cellSize, null);
+                }
             }
         }
-
 
         graphics2D.dispose();
         Graph2D.drawImage(bufferedImage, 0, 0, this);

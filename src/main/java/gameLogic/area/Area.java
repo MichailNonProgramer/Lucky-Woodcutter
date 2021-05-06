@@ -3,11 +3,13 @@ package gameLogic.area;
 import utils.Direction;
 import utils.Point;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class Area {
+public abstract class Area  implements Serializable {
     private ArrayList<Point> activeCords;
     private Point cords;
+    private static final long serialVersionUID = 1L;
 
     public int getX() {
         return cords.x;

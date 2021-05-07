@@ -20,7 +20,7 @@ public class LuckyWoodcutter {
              display = new Display(GameConfig.getScreenWidth(), GameConfig.getScreenHeight(), new Game(new GameMap(), soloGame, new Player(1 ,2)));
         else {
             client = new Client();
-            display = new Display(GameConfig.getScreenWidth(), GameConfig.getScreenHeight(), new Game(client.getGameMap(), soloGame, client.getPlayer()));
+            display = new Display(GameConfig.getScreenWidth(), GameConfig.getScreenHeight(), new Game(client.getGameMap(), false, client.getPlayer()));
         }
     }
 }

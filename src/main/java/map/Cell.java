@@ -47,7 +47,9 @@ public class Cell implements Serializable {
 
     @Override
     public boolean equals(Object obj){
+        System.out.println(321);
         try {
+            System.out.println(123);
             return this.point == ((Cell) obj).point && eqObjectInCell((Cell) obj);
         } catch (Exception e){
             return false;
@@ -64,9 +66,16 @@ public class Cell implements Serializable {
 
     private boolean eqObjectInCell(Cell cell){
         for (WorldGameObject object : cell.getObjectsInCell()) {
-            if (!this.objectsInCell.contains(object))
+            if (!this.objectsInCell.contains(object)) {
+                System.out.println("No");
                 return false;
+            }
         }
+        for(WorldGameObject object: this.objectsInCell)
+            if(!cell.getObjectsInCell().contains(object)) {
+                System.out.println("No2");
+                return false;
+            }
         return true;
     }
 }

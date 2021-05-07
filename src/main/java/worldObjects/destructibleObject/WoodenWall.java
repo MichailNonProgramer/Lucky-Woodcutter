@@ -23,4 +23,9 @@ public class WoodenWall extends DestructibleObject implements Solid {
     public void changeSprite() {
 
     }
+
+    @Override
+    public void setSpriteSheet() {
+        super.setSpriteSheet(WoodenWallSprites.DAY);
+    }
 }

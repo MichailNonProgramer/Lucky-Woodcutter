@@ -24,4 +24,9 @@ public class StoneWall extends DestructibleObject implements Solid {
     public void changeSprite() {
 
     }
+
+    @Override
+    public void setSpriteSheet() {
+        super.setSpriteSheet(StoneWallSprites.DAY);
+    }
 }

@@ -36,4 +36,9 @@ public class Boulder extends DestructibleObject implements Solid {
     @Override
     public void changeSprite() {
     }
+
+    @Override
+    public void setSpriteSheet() {
+        super.setSpriteSheet(BoulderSprites.DAY);
+    }
 }

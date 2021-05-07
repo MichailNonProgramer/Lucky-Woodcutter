@@ -20,6 +20,6 @@ public class GameConfig {
         return mapHeight;
     }
 
-    private static final int mapWidth = 10500;
-    private static final int mapHeight = 10500;
+    private static final int mapWidth = 1000;
+    private static final int mapHeight = 1000;
 }

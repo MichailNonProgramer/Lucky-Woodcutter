@@ -9,13 +9,16 @@ import java.util.ArrayList;
 public class Game {
     public ArrayList<Player> players = new ArrayList<>();
     private GameMap gameMap;
-    public Player player;
+    private final Player player;
+    private boolean soloGame;
 
     public Game(GameMap gameMap, boolean soloGame, Player player){
         this.gameMap = gameMap;
         this.player = player;
+        this.soloGame = soloGame;
         players.add(player);
-        gameMap.getMap().get(player.getPoint()).addObjectInCell(player);
+        if (soloGame)
+            gameMap.getMap().get(player.getPoint()).addObjectInCell(player);
 //        var tree = new Tree(0, 1);
 //        gameMap.getMap().get(tree.getPoint()).addObjectInCell(tree);
     }
@@ -23,7 +26,8 @@ public class Game {
     public GameMap getGameMap(){
         return gameMap;
     }
-
+    public Player getPlayer() {return player;}
+    public boolean getSoloGame(){return this.soloGame;}
     private void gameInit(){
         gameMap.spawnEmptyMap();
         var player = new Player(0, 0);

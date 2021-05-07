@@ -6,12 +6,13 @@ import map.GameMap;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.io.IOException;
 
 public class Display  extends JFrame {
     private static BufferStrategy bufferStrategy;
     private GameWindow window;
 
-    public Display(int width, int height, Game game) {
+    public Display(int width, int height, Game game) throws IOException, ClassNotFoundException {
         setTitle("Lucky Woodcutter");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setContentPane(new GameWindow(width, height, game));

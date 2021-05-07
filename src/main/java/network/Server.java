@@ -17,9 +17,9 @@ public class Server extends Thread
     private GameMap gameMap;
     private HashMap<Point, Cell> map;
 
-    public Server(Socket s, GameMap gameMap) throws IOException, ClassNotFoundException {
+    public Server(Socket s) throws IOException, ClassNotFoundException {
         this.s = s;
-        this.gameMap = gameMap;
+        this.gameMap = MultiServer.gameMap;
         out = new ObjectOutputStream((s.getOutputStream()));
         in = new ObjectInputStream(s.getInputStream());
         // Если любой из вышеприведенных вызовов приведет к
@@ -40,7 +40,6 @@ public class Server extends Thread
                // map = (HashMap<Point, Cell>) in.readObject();
                 if (map != null)
                     synchronizedGameMap();
-                System.out.println(123);
                 for (Server player : MultiServer.players)
                     MultiServer.send(gameMap, player.out);
         }
@@ -62,7 +61,7 @@ public class Server extends Thread
         for (Map.Entry<Point, Cell> pointCellEntry : map.entrySet()) {
             var point = (Point) ((Map.Entry) pointCellEntry).getKey();
             var cell = (Cell) ((Map.Entry) pointCellEntry).getValue();
-            if (!gameMap.getMap().get(point).equals(cell))
+            if (gameMap.getMap().get(point) != cell)
                 gameMap.getMap().put(point, cell);
         }
     }

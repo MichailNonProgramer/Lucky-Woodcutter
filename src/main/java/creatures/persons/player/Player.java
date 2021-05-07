@@ -177,4 +177,8 @@ public class Player extends Movable implements IPlayer, Serializable {
                 break;
         }
     }
+
+    @Override
+    public void setSpriteSheet() {
+    }
 }

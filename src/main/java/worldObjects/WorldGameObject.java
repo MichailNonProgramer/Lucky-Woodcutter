@@ -9,4 +9,5 @@ public interface WorldGameObject  extends Serializable {
     DrawPriorities getDrawPriority();
     BufferedImage getSpriteSheet();
     void changeSprite();
+    void setSpriteSheet();
 }

@@ -27,4 +27,10 @@ public class Ground implements WorldGameObject {
     public void changeSprite() {
 
     }
+
+    @Override
+    public void setSpriteSheet() {
+        this.spriteSheet = GroundSprites.DAY;
+    }
+
 }

@@ -1,5 +1,7 @@
 package creatures.persons.player;
 
+import game.Game;
+import map.Cell;
 import utils.Direction;
 import graphics.DrawPriorities;
 import graphics.sprites.PlayerSprites;
@@ -90,14 +92,15 @@ public class Player extends Movable implements IPlayer, Serializable {
         this(new Point(x, y));
     }
 
-    public void move(Direction dir, GameMap gameMap) {
+    public void move(Direction dir, Game game) {
         camera.move(dir.getPoint());
 
-        var currentCell = gameMap.getMap().get(point);
+        var currentCell = game.getGameMap().getMap().get(point);
         currentCell.removeObjectFromCell(this);
         this.point = point.add(dir.getPoint());
-        var newCell = gameMap.getMap().get(point);
+        var newCell = game.getGameMap().getMap().get(point);
         newCell.addObjectInCell(this);
+        game.getGameMap().getMap().put(point, newCell);
 
         this.handsArea.setUpdatedActiveCords(point);
         this.visibleArea.setUpdatedActiveCords(point);
@@ -176,6 +179,23 @@ public class Player extends Movable implements IPlayer, Serializable {
                 this.spriteSheet = PlayerSprites.RIGHT;
                 break;
         }
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        try {
+            return this.point == ((Player)obj).point;
+        } catch (Exception e){
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 71 * hash + this.point.x;
+        hash = 71 * hash + this.point.y;
+        return hash;
     }
 
     @Override

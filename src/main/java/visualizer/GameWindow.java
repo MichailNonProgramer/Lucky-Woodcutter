@@ -1,6 +1,7 @@
 package visualizer;
 
 import config.GameConfig;
+import creatures.persons.player.Player;
 import game.Game;
 import graphics.sprites.EffectsSprites;
 import map.Cell;
@@ -21,7 +22,7 @@ public class GameWindow extends JPanel implements Runnable {
     private BufferedImage bufferedImage;
     private Graphics2D graphics2D;
     private static Thread thread;
-    private Game game;
+    private final Game game;
 
     public GameWindow(int width, int height, Game game) {
         this.width = width;
@@ -37,9 +38,6 @@ public class GameWindow extends JPanel implements Runnable {
         long now;
         long updateTime;
         long wait;
-        long nowUpdateServer;
-        long updateTimeServer;
-        long waitServer;
 
         final int TARGET_FPS = 60;
         final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
@@ -54,11 +52,25 @@ public class GameWindow extends JPanel implements Runnable {
                 if (!game.getSoloGame()){
                     if (counter == 60) {
                         Client.start();
+                        game.setGameMap(Client.getGameMap());
+                        var o = false;
+                        for (var obj :  game.getGameMap().getMap().get(game.getPlayer().getPoint()).getObjectsInCell()) {
+                            //System.out.println(game.getPlayer().getX() + " " + game.getPlayer().getY());
+                            if (obj instanceof Player) {
+                                var pl = (Player)obj;
+                                System.out.println("Plaeyr");
+                                game.setPlayer((Player) obj);
+                                o = true;
+                                break;
+                            }
+                        }
+                        if( !o)
+                            game.getGameMap().getMap().get(game.getPlayer().getPoint()).addObjectInCell(game.getPlayer());
                         counter = 0;
                     }
                 }
                 update();
-            } catch (IOException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
             updateTime = System.nanoTime() - now;
@@ -77,13 +89,12 @@ public class GameWindow extends JPanel implements Runnable {
         setVisible(false);
     }
 
-
     public void init() {
         addNotify();
         running = true;
         bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         graphics2D = bufferedImage.createGraphics();
-        this.addKeyListener(new KeyHandler(game.getPlayer(), game.getGameMap()));
+        this.addKeyListener(new KeyHandler(game.getPlayer(), game));
         var mouseHandler = new MouseHandler(game.getPlayer(), game.getGameMap());
         this.addMouseListener(mouseHandler);
         this.addMouseMotionListener(mouseHandler);

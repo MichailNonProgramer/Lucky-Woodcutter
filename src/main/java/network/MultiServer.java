@@ -17,10 +17,6 @@ public class MultiServer {
     public static LinkedList<Server> players = new LinkedList<>();
     public static HashMap<Point, Cell> changesMap;
 
-//   // public MultiServer(){
-//        this.gameMap = new GameMap();
-//    }
-
     public static void main(String[] args) throws IOException {
         gameMap.spawnEmptyMap();
         ServerSocket s = new ServerSocket(Common.PORT);
@@ -30,7 +26,7 @@ public class MultiServer {
                 // Блокируется до возникновения нового соединения:
                 Socket socket = s.accept();
                 try {
-                    players.add(new Server(socket));
+                    new Server(socket);
                 } catch (IOException | ClassNotFoundException e) {
                     // Если завершится неудачей, закрывается сокет,
                     // в противном случае, нить закроет его:
@@ -41,15 +37,13 @@ public class MultiServer {
             s.close();
         }
     }
-    public static synchronized void addChangesCell(Cell cell){
-        if (!changesMap.containsKey(cell.getPoint()))
-            changesMap.put(cell.getPoint(), cell);
-    }
 
     public static synchronized void updateChangesCell(){
         changesMap = new HashMap<>();
     }
     public static void setGameMap(GameMap gameMap){
+
+        System.out.println(123);
         MultiServer.gameMap = gameMap;
     }
 

@@ -1,5 +1,6 @@
 package gameLogic.handlers;
 
+import game.Game;
 import utils.Direction;
 import creatures.persons.player.Player;
 import map.GameMap;
@@ -12,10 +13,10 @@ import java.util.Arrays;
 
 public class KeyHandler implements KeyListener {
     private final Player player;
-    private final GameMap gameMap;
+    private final Game game;
 
-    public KeyHandler(Player player, GameMap gameMap) {
-        this.gameMap = gameMap;
+    public KeyHandler(Player player, Game game) {
+        this.game = game;
         this.player = player;
     }
 
@@ -32,7 +33,7 @@ public class KeyHandler implements KeyListener {
         if (moveEvents.contains(key)) {
             var newDirection = getDirectionByKey(e);
             if (isCanWalkTo(newDirection))
-                player.move(newDirection, gameMap);
+                player.move(newDirection, game);
         }
         if (e.getKeyCode() == KeyEvent.VK_F) {
             if (player.getActiveResource() == Resources.Wood) {
@@ -50,7 +51,7 @@ public class KeyHandler implements KeyListener {
 
     private Boolean isCanWalkTo(Direction dir) {
         var newPoint = player.getPoint().add(dir.getPoint());
-        var newCell = gameMap.getMap().get(newPoint);
+        var newCell = game.getGameMap().getMap().get(newPoint);
         if (newCell == null)
             return false;
         else {

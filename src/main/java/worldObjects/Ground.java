@@ -2,6 +2,7 @@ package worldObjects;
 
 import graphics.DrawPriorities;
 import graphics.sprites.GroundSprites;
+import map.Cell;
 
 import java.awt.image.BufferedImage;
 
@@ -32,5 +33,21 @@ public class Ground implements WorldGameObject {
     public void setSpriteSheet() {
         this.spriteSheet = GroundSprites.DAY;
     }
+
+    @Override
+    public boolean equals(Object obj){
+        try {
+            return this.hashCode() == ((Ground)obj).hashCode();
+        } catch (Exception e){
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = DrawPriorities.GROUND.getValue() * 71;
+        return hash;
+    }
+
 
 }

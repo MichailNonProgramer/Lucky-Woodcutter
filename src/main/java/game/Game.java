@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Game {
     public ArrayList<Player> players = new ArrayList<>();
     private GameMap gameMap;
-    private final Player player;
+    private  Player player;
     private boolean soloGame;
 
     public Game(GameMap gameMap, boolean soloGame, Player player){
@@ -26,12 +26,22 @@ public class Game {
     public GameMap getGameMap(){
         return gameMap;
     }
+
     public Player getPlayer() {return player;}
+
     public boolean getSoloGame(){return this.soloGame;}
+
     private void gameInit(){
         gameMap.spawnEmptyMap();
         var player = new Player(0, 0);
         players.add(player);
         gameMap.getMap().get(player.getPoint()).addObjectInCell(player);
+    }
+
+    public synchronized void setPlayer(Player player){
+        this.player = player;
+    }
+    public synchronized void setGameMap(GameMap gameMap){
+        this.gameMap = gameMap;
     }
 }

@@ -10,4 +10,5 @@ public interface WorldGameObject  extends Serializable {
     BufferedImage getSpriteSheet();
     void changeSprite();
     void setSpriteSheet();
+
 }

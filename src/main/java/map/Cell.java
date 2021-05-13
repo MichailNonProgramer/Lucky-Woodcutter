@@ -25,6 +25,14 @@ public class Cell implements Serializable {
         this.point = point;
     }
 
+    // конструктор копии
+    public Cell(Cell other) {
+        this(other.getPoint());
+        for (var ob : other.getObjectsInCell()) {
+            this.addObjectInCell(ob);
+        }
+    }
+
     public ArrayList<WorldGameObject> getObjectsInCell() {
         return this.objectsInCell;
     }

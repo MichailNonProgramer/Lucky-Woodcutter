@@ -1,5 +1,6 @@
 package worldObjects.destructibleObject;
 
+import map.Cell;
 import utils.Point;
 import worldObjects.WorldGameObject;
 
@@ -48,5 +49,26 @@ public abstract class DestructibleObject implements WorldGameObject {
 
     public int getResourcesCount() {
         return resourcesCount;
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        try {
+            return this.point.equals(((DestructibleObject) obj).point)
+                    && this.lives == ((DestructibleObject) obj).getLives()
+                    && this.resourceName == ((DestructibleObject) obj).getResourceName()
+                    && this.resourcesCount == ((DestructibleObject) obj).getResourcesCount();
+        } catch (Exception e){
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 71 * hash + this.point.x;
+        hash = 71 * hash + this.point.y;
+        hash = hash * this.resourcesCount;
+        return hash;
     }
 }

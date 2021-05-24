@@ -12,12 +12,14 @@ import java.io.IOException;
 public class LuckyWoodcutter {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         var soloGame = false;
-        var serverStart = true;
         Display display;
         Client client;
         MultiServer multiServer;
-        if (soloGame)
-             display = new Display(GameConfig.getScreenWidth(), GameConfig.getScreenHeight(), new Game(new GameMap(), soloGame, new Player(1 ,2)));
+        if (soloGame) {
+            var gameMap = new GameMap();
+            gameMap.spawnEmptyMap();
+            display = new Display(GameConfig.getScreenWidth(), GameConfig.getScreenHeight(), new Game(gameMap, soloGame, new Player(1, 2)));
+        }
         else {
             client = new Client();
             display = new Display(GameConfig.getScreenWidth(), GameConfig.getScreenHeight(), new Game(client.getGameMap(), false, client.getPlayer()));

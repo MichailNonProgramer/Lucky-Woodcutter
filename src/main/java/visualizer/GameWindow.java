@@ -6,6 +6,7 @@ import game.Game;
 import graphics.sprites.EffectsSprites;
 import map.Cell;
 import network.Client;
+import network.Lock;
 import utils.FPSCounter;
 import gameLogic.handlers.KeyHandler;
 import gameLogic.handlers.MouseHandler;
@@ -34,7 +35,7 @@ public class GameWindow extends JPanel implements Runnable {
     }
 
     @Override
-    public void run() {
+    public synchronized void run() {
         long now;
         long updateTime;
         long wait;
@@ -49,23 +50,33 @@ public class GameWindow extends JPanel implements Runnable {
             FPSCounter.StartCounter();
             now = System.nanoTime();
             try {
-                if (!game.getSoloGame()){
+                if (!game.getSoloGame()) {
                     if (counter == 60) {
-                        Client.start();
-                        game.setGameMap(Client.getGameMap());
-                        var o = false;
-                        for (var obj :  game.getGameMap().getMap().get(game.getPlayer().getPoint()).getObjectsInCell()) {
-                            //System.out.println(game.getPlayer().getX() + " " + game.getPlayer().getY());
-                            if (obj instanceof Player) {
-                                var pl = (Player)obj;
-                                System.out.println("Plaeyr");
-                                game.setPlayer((Player) obj);
-                                o = true;
-                                break;
+                        if (!Lock.isLockClient) {
+                            Lock.isLockClient = true;
+                            var coord = game.getPlayer().getPoint();
+                            //System.out.println(Lock.isLock);
+                            Client.rememberChanges(game.getGameMap());
+                            Client.start();
+                            System.out.println("OK");
+                            game.setGameMap(Client.getGameMap());
+                            for (var obj : game.getGameMap().getMap().get(coord).getObjectsInCell()) {
+                                if (obj instanceof Player && ((Player) obj).getId().equals(game.getPlayer().getId())) {
+//                                    try {
+//                                        for (var obj2 : game.getGameMap().getMap().get(game.getPlayer().getPoint()).getObjectsInCell())
+//                                            if (obj2 instanceof Player)
+//                                                if (!((Player) obj).getPoint().equals(((Player)obj2).getPoint()))
+//                                                    game.getGameMap().getMap().get(((Player) obj2).getPoint()).removeObjectFromCell(obj2);
+//                                    } catch (Exception e) {
+//                                        System.out.println(e.getMessage());
+//                                    }
+                                    game.setPlayer((Player) obj);
+                                   // System.out.println("Change Player");
+                                    break;
+                                }
                             }
                         }
-                        if( !o)
-                            game.getGameMap().getMap().get(game.getPlayer().getPoint()).addObjectInCell(game.getPlayer());
+                        Lock.isLockClient = false;
                         counter = 0;
                     }
                 }
@@ -85,7 +96,6 @@ public class GameWindow extends JPanel implements Runnable {
             }
             FPSCounter.StopAndPost();
         }
-
         setVisible(false);
     }
 
@@ -137,17 +147,16 @@ public class GameWindow extends JPanel implements Runnable {
     }
 
 
-    public void addNotify() {
+    public synchronized void addNotify() {
         super.addNotify();
-
+        System.out.println(123);
         if (thread == null) {
             thread = new Thread(this, "GameThread");
             thread.start();
         }
     }
 
-    public void update() throws IOException {
-        //Client.start();
+    public void update() {
         repaint();
     }
 

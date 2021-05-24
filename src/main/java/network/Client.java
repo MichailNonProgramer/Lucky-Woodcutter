@@ -1,6 +1,7 @@
 package network;
 
 import creatures.persons.player.Player;
+import game.Game;
 import map.Cell;
 import map.GameMap;
 import utils.Point;
@@ -46,7 +47,7 @@ public class Client extends  ObjectOutputStream{
     }
 
 
-    public static void start() throws IOException, ClassNotFoundException {
+    public synchronized static void start() throws IOException, ClassNotFoundException {
         // Передаем null в getByName(), получая
         // специальный IP адрес "локальной заглушки"
         // для тестирования на машине без сети:
@@ -54,7 +55,7 @@ public class Client extends  ObjectOutputStream{
         // Альтернативно, вы можете использовать
         // адрес или имя:
         // InetAddress addr =
-        // InetAddress.getByName("127.0.0.1");
+        //InetAddress addr = InetAddress.getByName("94.140.142.18");
         // InetAddress addr =
         // InetAddress.getByName("localhost");
         //System.out.println("addr = " + addr);
@@ -66,11 +67,12 @@ public class Client extends  ObjectOutputStream{
             in = new ObjectInputStream(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
 
-            rememberChanges();
+            //rememberChanges();
             gameMap = (GameMap) in.readObject();
 //            gameMap.getMap().get(player.getPoint()).addObjectInCell(player);
             synchronizeGameMap();
             out.writeObject(changesCells);
+            out.flush();
             changesCells = new HashMap<>();
             activityMap = new HashMap<>();
             for (Point point : player.getVisibleArea().getActiveCords()) {
@@ -82,32 +84,28 @@ public class Client extends  ObjectOutputStream{
             in.close();
             out.close();
 
-        //System.out.println("closing...");
+//            System.out.println("closing...");
     }
 
     private synchronized static void synchronizeGameMap() {
         for (var pointCellEntry : changesCells.entrySet()) {
             var point = (Point) (pointCellEntry).getKey();
-            var cell = (Cell) ( pointCellEntry).getValue();
+            var cell = (Cell) (pointCellEntry).getValue();
             gameMap.getMap().put(point, cell);
         }
     }
 // ИСПРАВИТЬ
-    private synchronized static void rememberChanges() {
+    public synchronized static void rememberChanges(GameMap gameMapClient) {
         System.out.println(gameMap.getMap().get(player.getPoint()).toString());
         for (var pointCellEntry : activityMap.entrySet()) {
             var point =  (pointCellEntry).getKey();
-            if (gameMap.getMap().get(point) == null)
+            if (gameMapClient.getMap().get(point) == null)
                 continue;
-            if (!gameMap.getMap().get(point).equals(activityMap.get(point))) {
-                changesCells.put(point, gameMap.getMap().get(point));
-                System.out.println(point.toString() + " " + gameMap.getMap().get(point).getObjectsInCell().toString() + " " + changesCells.get(point).getObjectsInCell().toString() );
+            if (!gameMapClient.getMap().get(point).equals(activityMap.get(point))) {
+                changesCells.put(point, gameMapClient.getMap().get(point));
+                //System.out.println(point.toString() + " " + gameMap.getMap().get(point).getObjectsInCell().toString() + " " + changesCells.get(point).getObjectsInCell().toString() );
             }
         }
-    }
-
-    public static void addMap(Cell cell){
-        changesCells.put(cell.getPoint(), cell);
     }
 
     public synchronized static GameMap getGameMap(){

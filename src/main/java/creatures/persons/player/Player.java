@@ -21,21 +21,41 @@ import worldObjects.destructibleObject.WoodenWall;
 
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Player extends Movable implements IPlayer, Serializable {
     private Point point;
     private Direction direction;
     private transient BufferedImage spriteSheet;
-    private final Camera camera;
-    private final VisibleArea visibleArea;
-    private final HandsArea handsArea;
-    private final Inventory inventory;
+    private Camera camera;
+    private VisibleArea visibleArea;
+    private HandsArea handsArea;
+    private Inventory inventory;
     private Resources activeResource;
-    private ArrayList<Weapons> weapons;
-    private Weapons activeWeapon;
+//    private ArrayList<Weapons> weapons;
+//    private Weapons activeWeapon;
     private static final long serialVersionUID = 1L;
+    private String id;
 
+    public void setCamera(Camera camera){
+        this.camera = camera;
+    }
+
+    public void setId(String id){
+        this.id = id;
+    }
+    public void setVisibleArea(VisibleArea visibleArea){
+        this.visibleArea = visibleArea;
+    }
+    public void setHandsArea(HandsArea handsArea){
+        this.handsArea = handsArea;
+    }
+    public void setInventory(Inventory inventory){
+        this.inventory = inventory;
+    }
     public HandsArea getHandsArea() {
         return handsArea;
     }
@@ -86,13 +106,31 @@ public class Player extends Movable implements IPlayer, Serializable {
         this.camera.centerOnPlayer(this);
         this.inventory = new Inventory();
         this.activeResource = Resources.Wood;
+        this.id = generateID();
     }
 
     public Player(int x, int y) {
         this(new Point(x, y));
     }
 
-    public void move(Direction dir, Game game) {
+    public Player(Player other){
+        this(other.getPoint());
+        this.setActiveResource(other.getActiveResource());
+        this.setDirection(other.getDirection());
+        this.setSpriteSheet();
+        this.setVisibleArea(other.getVisibleArea());
+
+        this.setCamera(other.getCamera());
+        this.setHandsArea(other.handsArea);
+        this.setId(other.getId());
+        this.setInventory(other.getInventory());
+    }
+
+    public Inventory getInventory(){
+        return this.inventory;
+    }
+
+    public synchronized void move(Direction dir, Game game) {
         camera.move(dir.getPoint());
 
         var currentCell = game.getGameMap().getMap().get(point);
@@ -106,7 +144,7 @@ public class Player extends Movable implements IPlayer, Serializable {
         this.visibleArea.setUpdatedActiveCords(point);
     }
 
-    public void attack(Point point, GameMap gameMap) {
+    public synchronized void attack(Point point, GameMap gameMap) {
         var cell = gameMap.getMap().get(point);
         for (var worldGameObj : cell.getObjectsInCell()) {
             if (worldGameObj instanceof DestructibleObject) {
@@ -118,6 +156,11 @@ public class Player extends Movable implements IPlayer, Serializable {
                 }
             }
         }
+    }
+
+    private String generateID(){
+        var random = new SecureRandom();
+        return new BigInteger(130, random).toString(32);
     }
 
     public void build(Point point, GameMap gameMap) {
@@ -184,6 +227,8 @@ public class Player extends Movable implements IPlayer, Serializable {
     @Override
     public boolean equals(Object obj){
         try {
+            System.out.println(this.point.toString() + ' ' + ((Player)obj).point.toString());
+            System.out.println(this.point == ((Player)obj).point);
             return this.point == ((Player)obj).point;
         } catch (Exception e){
             return false;
@@ -200,5 +245,10 @@ public class Player extends Movable implements IPlayer, Serializable {
 
     @Override
     public void setSpriteSheet() {
+        changeSprite();
+    }
+
+    public String getId() {
+        return id;
     }
 }

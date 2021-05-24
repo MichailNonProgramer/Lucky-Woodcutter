@@ -27,7 +27,7 @@ public class Game {
         return gameMap;
     }
 
-    public Player getPlayer() {return player;}
+    public synchronized Player getPlayer() {return player;}
 
     public boolean getSoloGame(){return this.soloGame;}
 

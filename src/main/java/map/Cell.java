@@ -37,11 +37,11 @@ public class Cell implements Serializable {
         return this.objectsInCell;
     }
 
-    public void addObjectInCell(WorldGameObject worldGameObject) {
+    public synchronized void addObjectInCell(WorldGameObject worldGameObject) {
         objectsInCell.add(worldGameObject);
     }
 
-    public void removeObjectFromCell(WorldGameObject worldGameObject) {
+    public synchronized void removeObjectFromCell(WorldGameObject worldGameObject) {
         objectsInCell.remove(worldGameObject);
     }
 
@@ -60,6 +60,7 @@ public class Cell implements Serializable {
     @Override
     public boolean equals(Object obj) {
         try {
+            //System.out.println(this.point.equals(((Cell) obj).point) && eqObjectInCell((Cell) obj));
             return this.point.equals(((Cell) obj).point) && eqObjectInCell((Cell) obj);
         } catch (Exception e) {
             return false;
@@ -100,7 +101,7 @@ public class Cell implements Serializable {
                     var player2 = (Player) object2;
                     if (player1.equals(player2)) {
                         co = true;
-                        System.out.println(player1.toString() + " " + player2.toString());
+                       // System.out.println(player1.toString() + " " + player2.toString() + " " + 1);
                         break;
                     }
                 }
@@ -132,6 +133,7 @@ public class Cell implements Serializable {
                     var player1 = (Player) object1;
                     var player2 = (Player) object2;
                     if (player1.equals(player2)) {
+                       // System.out.println(player1.toString() + " " + player2.toString() + " " + 2);
                         co = true;
                         break;
                     }

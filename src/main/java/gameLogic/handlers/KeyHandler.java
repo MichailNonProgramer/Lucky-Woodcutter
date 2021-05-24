@@ -1,6 +1,7 @@
 package gameLogic.handlers;
 
 import game.Game;
+import network.Client;
 import utils.Direction;
 import creatures.persons.player.Player;
 import map.GameMap;

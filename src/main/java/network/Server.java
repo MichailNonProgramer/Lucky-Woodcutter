@@ -61,13 +61,13 @@ public class Server extends Thread {
             var point = (Point) ( pointCellEntry).getKey();
             var cell = (Cell) ( pointCellEntry).getValue();
             if (!serverMap.getMap().get(point).equals(cell))
-                for(var obj : serverMap.getMap().get(point).getObjectsInCell()) {
-                    if (obj instanceof IPlayer) {
-                        var index = cell.getObjectsInCell().indexOf( obj);
-                        serverMap.getMap().get(point).addObjectInCell(cell.getObjectsInCell().get(index));
-                    }
-                }
-            else
+//                for(var obj : serverMap.getMap().get(point).getObjectsInCell()) {
+//                    if (obj instanceof IPlayer) {
+//                        var index = cell.getObjectsInCell().indexOf( obj);
+//                        serverMap.getMap().get(point).addObjectInCell(cell.getObjectsInCell().get(index));
+//                }
+//                }
+//            else
                 serverMap.getMap().put(point, cell);
         }
     }

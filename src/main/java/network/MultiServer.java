@@ -1,6 +1,6 @@
 package network;
 
-import game.Game;
+import creatures.persons.player.Player;
 import map.Cell;
 import map.GameMap;
 import utils.Point;
@@ -26,7 +26,7 @@ public class MultiServer {
                 // Блокируется до возникновения нового соединения:
                 Socket socket = s.accept();
                 try {
-                    new Server(socket);
+                    players.add(new Server(socket));
                 } catch (IOException | ClassNotFoundException e) {
                     // Если завершится неудачей, закрывается сокет,
                     // в противном случае, нить закроет его:
@@ -41,9 +41,12 @@ public class MultiServer {
     public static synchronized void updateChangesCell(){
         changesMap = new HashMap<>();
     }
-    public static void setGameMap(GameMap gameMap){
 
-        System.out.println(123);
+    public static synchronized void setGameMap(GameMap gameMap){
+        for (var cell : gameMap.getMap().values())
+            for (var obj : cell.getObjectsInCell())
+                if (obj instanceof Player)
+                    System.out.println(obj.toString() + " " + cell.getPoint().toString());
         MultiServer.gameMap = gameMap;
     }
 

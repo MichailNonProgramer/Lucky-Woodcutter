@@ -10,7 +10,7 @@ import java.io.IOException;
 
 
 public class LuckyWoodcutter {
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
         var soloGame = false;
         Display display;
         Client client;

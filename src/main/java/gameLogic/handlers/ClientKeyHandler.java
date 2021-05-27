@@ -2,6 +2,8 @@ package gameLogic.handlers;
 
 import game.Game;
 import network.Client;
+import network.Lock;
+import network.Sender;
 import utils.Direction;
 import creatures.persons.player.Player;
 import map.GameMap;
@@ -10,13 +12,14 @@ import worldObjects.destructibleObject.Resources;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.util.Arrays;
 
-public class KeyHandler implements KeyListener {
+public class ClientKeyHandler implements KeyListener {
     private final Player player;
     private final Game game;
 
-    public KeyHandler(Player player, Game game) {
+    public ClientKeyHandler(Player player, Game game) {
         this.game = game;
         this.player = player;
     }
@@ -28,19 +31,31 @@ public class KeyHandler implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        var moveEvents = Arrays.asList(KeyEvent.VK_A, KeyEvent.VK_D,
-                KeyEvent.VK_W, KeyEvent.VK_S);
-        var key = e.getKeyCode();
-        if (moveEvents.contains(key)) {
-            var newDirection = getDirectionByKey(e);
-            if (isCanWalkTo(newDirection))
-                player.move(newDirection, game);
-        }
-        if (e.getKeyCode() == KeyEvent.VK_F) {
-            if (player.getActiveResource() == Resources.Wood) {
-                player.setActiveResource(Resources.Stone);
-            } else {
-                player.setActiveResource(Resources.Wood);
+        if (game.isSoloGame()) {
+            var moveEvents = Arrays.asList(KeyEvent.VK_W, KeyEvent.VK_A, KeyEvent.VK_S, KeyEvent.VK_D);
+            var key = e.getKeyCode();
+            if (moveEvents.contains(key)) {
+                var newDirection = KeyHandlerGeneral.getDirectionByKey(key);
+                if (KeyHandlerGeneral.isCanWalkTo(player, gameMap, newDirection))
+                    player.move(newDirection, gameMap);
+            }
+            if (key == KeyEvent.VK_F) {
+                if (player.getActiveResource() == Resources.Wood) {
+                    player.setActiveResource(Resources.Stone);
+                } else {
+                    player.setActiveResource(Resources.Wood);
+                }
+            }
+        } else {
+            try {
+                Lock.isLockClient = true;
+                Client.start(new Sender("KeyPressed", e.getKeyCode(), null, player.getId()));
+                game.setGameMap(Client.getGameMap());
+                game.setPlayer(Client.getPlayer());
+                Lock.isLockClient = false;
+
+            } catch (IOException | ClassNotFoundException ioException) {
+                ioException.printStackTrace();
             }
         }
     }

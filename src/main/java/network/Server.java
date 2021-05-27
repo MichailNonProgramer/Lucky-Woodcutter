@@ -1,75 +1,71 @@
 package network;
 
-import creatures.persons.player.IPlayer;
 import creatures.persons.player.Player;
-import map.Cell;
-import map.GameMap;
+import gameLogic.handlers.ServerKeyHandler;
 import utils.Point;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Random;
 
 public class Server extends Thread {
     private final Socket s;
     private ObjectInputStream in;
     private ObjectOutputStream out;
-    private GameMap serverMap;
-    private HashMap<Point, Cell> map;
+    private Player player;
+    private ServerKeyHandler keyHandler;
 
     public Server(Socket s) throws IOException, ClassNotFoundException {
+        var r = new Random();
         this.s = s;
-        this.serverMap = MultiServer.gameMap;
-        this.map = new HashMap<>();
-
-        start(); // вызываем run()
+        out = new ObjectOutputStream((s.getOutputStream()));
+        in = new ObjectInputStream(s.getInputStream());
+        this.player = new Player(new Point(r.nextInt(10), r.nextInt(10)));
+        System.out.println(player.getX() + " " + player.getY());
+        MultiServer.players.put( this.player.getId(), this.player);
+        MultiServer.gameMap.getMap().get(this.player.getPoint()).addObjectInCell(this.player);
+        this.keyHandler = new ServerKeyHandler(player, MultiServer.gameMap);
+        in.readObject();
+        out.writeObject(MultiServer.gameMap);
+        out.writeObject(MultiServer.players.get(player.getId()));
+        start();
     }
 
     public void run() {
-        try {
-            out = new ObjectOutputStream((s.getOutputStream()));
-            in = new ObjectInputStream(s.getInputStream());
-            out.writeObject(serverMap);
-            map = (HashMap<Point, Cell>) in.readObject();
-            synchronizedGameMap();
-            s.shutdownInput();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        MultiServer.setGameMap(serverMap);
-        // map = (HashMap<Point, Cell>) in.readObject();
-//                for (Server player : MultiServer.players)
-//                    MultiServer.send(gameMap, player.out);
-//        }
-//        catch (IOException e) {
-//            System.err.println("IO Exception");
-//        }
-//        finally {
-        try {
-            s.close();
-            in.close();
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        while (true) {
+            try {
+                var send = in.readObject();
+                if (send != null) {
+                    parseMessage((Sender) send);
+                }
+                    out.writeObject(MultiServer.gameMap);
+                    out.writeObject(player);
+                    out.reset();
+                    System.out.println(player.getX() + " " + player.getY());
+                    out.flush();
+                    Thread.sleep(100);
+
+
+            } catch (IOException | ClassNotFoundException | InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
+    private synchronized void parseMessage(Sender message) {
+        var event = message.event;
+        System.out.println(event);
+        if (event.equals("KeyPressed")) {
+            keyHandler.keyPressed(message.keyCode);
+            MultiServer.players.put(player.getId(), player);
+        }
+        if (event == "MousePressed") {
 
-    private synchronized void synchronizedGameMap(){
-        for (var pointCellEntry : map.entrySet()) {
-            var point = (Point) ( pointCellEntry).getKey();
-            var cell = (Cell) ( pointCellEntry).getValue();
-            if (!serverMap.getMap().get(point).equals(cell))
-//                for(var obj : serverMap.getMap().get(point).getObjectsInCell()) {
-//                    if (obj instanceof IPlayer) {
-//                        var index = cell.getObjectsInCell().indexOf( obj);
-//                        serverMap.getMap().get(point).addObjectInCell(cell.getObjectsInCell().get(index));
-//                }
-//                }
-//            else
-                serverMap.getMap().put(point, cell);
+        }
+        if (event == "MouseMoved") {
+
         }
     }
+
 }
 

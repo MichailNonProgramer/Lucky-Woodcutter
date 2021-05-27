@@ -13,102 +13,46 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class Client extends  ObjectOutputStream{
-    private static HashMap<Point, Cell> activityMap;
+public class Client extends  ObjectOutputStream {
     public static Player player;
     private static GameMap gameMap;
     private static ObjectInputStream in;
-    private static HashMap<Point, Cell> changesCells = new HashMap<>();
     private static ObjectOutputStream out;
-    private final InetAddress address = InetAddress.getByName(null);
+    final Socket socket;
+    private static String id;
 
-    public Client() throws IOException, ClassNotFoundException {
-        Socket socket = new Socket(address, Common.PORT);
+    public Client() throws IOException, ClassNotFoundException, InterruptedException {
+        InetAddress address = InetAddress.getByName(null);
+        socket = new Socket(address, Common.PORT);
         in = new ObjectInputStream(socket.getInputStream());
         out = new ObjectOutputStream(socket.getOutputStream());
+        out.writeObject(null);
+        out.flush();
         gameMap = (GameMap) in.readObject();
-        initPlayer();
-        out.writeObject(changesCells);
-        activityMap = new HashMap<>();
-        for (Point point : player.getVisibleArea().getActiveCords()) {
-            if(gameMap.getMap().get(point) != null)
-                activityMap.put(point, new Cell(gameMap.getMap().get(point)));
+        player = (Player) in.readObject();
+    }
+
+
+    public synchronized static void start(Sender sender) throws IOException, ClassNotFoundException {
+        try {
+                out.writeObject(sender);
+                gameMap = (GameMap) in.readObject();
+                player = (Player) in.readObject();
+                System.out.println(player.getX() + " " + player.getY());
+        } catch (Exception exception){
+            System.out.println(exception.getMessage());
         }
     }
 
-    private void initPlayer(){
-        player = new Player(1,2);
-        gameMap.getMap().get(player.getPoint()).addObjectInCell(player);
-        changesCells.put(player.getPoint() ,new Cell(gameMap.getMap().get(player.getPoint())));
+    public String getId(){
+        return id;
     }
 
-    public Player getPlayer() {
+    public static Player getPlayer(){
         return player;
     }
 
-
-    public synchronized static void start() throws IOException, ClassNotFoundException {
-        // Передаем null в getByName(), получая
-        // специальный IP адрес "локальной заглушки"
-        // для тестирования на машине без сети:
-        InetAddress addr = InetAddress.getByName(null);
-        // Альтернативно, вы можете использовать
-        // адрес или имя:
-        // InetAddress addr =
-        //InetAddress addr = InetAddress.getByName("94.140.142.18");
-        // InetAddress addr =
-        // InetAddress.getByName("localhost");
-        //System.out.println("addr = " + addr);
-        // Помещаем все в блок try-finally, чтобы
-        // быть уверенным, что сокет закроется:
-
-            Socket socket = new Socket(addr, Common.PORT);
-            //Socket socket = new Socket(addr, Common.PORT);
-            in = new ObjectInputStream(socket.getInputStream());
-            out = new ObjectOutputStream(socket.getOutputStream());
-
-            //rememberChanges();
-            gameMap = (GameMap) in.readObject();
-//            gameMap.getMap().get(player.getPoint()).addObjectInCell(player);
-            synchronizeGameMap();
-            out.writeObject(changesCells);
-            out.flush();
-            changesCells = new HashMap<>();
-            activityMap = new HashMap<>();
-            for (Point point : player.getVisibleArea().getActiveCords()) {
-                if (gameMap.getMap().get(point) != null)
-                    activityMap.put(point, new Cell(gameMap.getMap().get(point)));
-            }
-            socket.close();
-
-            in.close();
-            out.close();
-
-//            System.out.println("closing...");
-    }
-
-    private synchronized static void synchronizeGameMap() {
-        for (var pointCellEntry : changesCells.entrySet()) {
-            var point = (Point) (pointCellEntry).getKey();
-            var cell = (Cell) (pointCellEntry).getValue();
-            gameMap.getMap().put(point, cell);
-        }
-    }
-// ИСПРАВИТЬ
-    public synchronized static void rememberChanges(GameMap gameMapClient) {
-        System.out.println(gameMap.getMap().get(player.getPoint()).toString());
-        for (var pointCellEntry : activityMap.entrySet()) {
-            var point =  (pointCellEntry).getKey();
-            if (gameMapClient.getMap().get(point) == null)
-                continue;
-            if (!gameMapClient.getMap().get(point).equals(activityMap.get(point))) {
-                changesCells.put(point, gameMapClient.getMap().get(point));
-                //System.out.println(point.toString() + " " + gameMap.getMap().get(point).getObjectsInCell().toString() + " " + changesCells.get(point).getObjectsInCell().toString() );
-            }
-        }
-    }
-
-    public synchronized static GameMap getGameMap(){
+    public static GameMap getGameMap(){
         return gameMap;
     }
 }

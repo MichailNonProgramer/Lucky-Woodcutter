@@ -14,7 +14,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ConcurrentModificationException;
 
-public class MouseHandler implements MouseListener, MouseMotionListener {
+public class ClientMouseHandler implements MouseListener, MouseMotionListener {
     private final GameMap gameMap;
     private final Player player;
 
@@ -22,7 +22,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
     private static int mouseY = -1;
     private static int mouseB = -1;
 
-    public MouseHandler(Player player, GameMap gameMap) {
+    public ClientMouseHandler(Player player, GameMap gameMap) {
         this.gameMap = gameMap;
         this.player = player;
     }
@@ -43,7 +43,6 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
     public void mouseMoved(MouseEvent e) {
         mouseX = e.getX();
         mouseY = e.getY();
-
         try {
             var cell = getCellByMouseCords();
             var rawSelectedPoint = cell.getPoint();

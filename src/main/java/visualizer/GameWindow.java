@@ -1,15 +1,14 @@
 package visualizer;
 
 import config.GameConfig;
-import creatures.persons.player.Player;
 import game.Game;
 import graphics.sprites.EffectsSprites;
 import map.Cell;
 import network.Client;
 import network.Lock;
 import utils.FPSCounter;
-import gameLogic.handlers.KeyHandler;
-import gameLogic.handlers.MouseHandler;
+import gameLogic.handlers.ClientKeyHandler;
+import gameLogic.handlers.ClientMouseHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,67 +34,37 @@ public class GameWindow extends JPanel implements Runnable {
     }
 
     @Override
-    public synchronized void run() {
+    public void run() {
         long now;
         long updateTime;
         long wait;
 
         final int TARGET_FPS = 60;
         final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
-        final int TARGET_UPDATE = 3;
-        final long OPTIMAL_TIME_SERVER = 1000000000 / TARGET_UPDATE;
         init();
-        var counter = 0;
         while (running) {
             FPSCounter.StartCounter();
             now = System.nanoTime();
-            try {
-                if (!game.getSoloGame()) {
-                    if (counter == 60) {
-                        if (!Lock.isLockClient) {
-                            Lock.isLockClient = true;
-                            var coord = game.getPlayer().getPoint();
-                            //System.out.println(Lock.isLock);
-                            Client.rememberChanges(game.getGameMap());
-                            Client.start();
-                            System.out.println("OK");
-                            game.setGameMap(Client.getGameMap());
-                            for (var obj : game.getGameMap().getMap().get(coord).getObjectsInCell()) {
-                                if (obj instanceof Player && ((Player) obj).getId().equals(game.getPlayer().getId())) {
-//                                    try {
-//                                        for (var obj2 : game.getGameMap().getMap().get(game.getPlayer().getPoint()).getObjectsInCell())
-//                                            if (obj2 instanceof Player)
-//                                                if (!((Player) obj).getPoint().equals(((Player)obj2).getPoint()))
-//                                                    game.getGameMap().getMap().get(((Player) obj2).getPoint()).removeObjectFromCell(obj2);
-//                                    } catch (Exception e) {
-//                                        System.out.println(e.getMessage());
-//                                    }
-                                    game.setPlayer((Player) obj);
-                                   // System.out.println("Change Player");
-                                    break;
-                                }
-                            }
-                        }
-                        Lock.isLockClient = false;
-                        counter = 0;
-                    }
-                }
-                update();
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
+            update();
             updateTime = System.nanoTime() - now;
             wait = (OPTIMAL_TIME - updateTime) / 1000000;
-
+            if (!game.isSoloGame() && !Lock.isLockClient) {
+                try {
+                    Client.start(null);
+                    game.setGameMap(Client.getGameMap());
+                    Thread.sleep(100);
+                } catch (IOException | ClassNotFoundException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
             try {
-                Thread.sleep(Math.max(0,wait));
-                if (!game.getSoloGame())
-                    counter += 1;
+                Thread.sleep(wait);
             } catch (Exception e) {
                 e.printStackTrace();
             }
             FPSCounter.StopAndPost();
         }
+
         setVisible(false);
     }
 
@@ -104,8 +73,8 @@ public class GameWindow extends JPanel implements Runnable {
         running = true;
         bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         graphics2D = bufferedImage.createGraphics();
-        this.addKeyListener(new KeyHandler(game.getPlayer(), game));
-        var mouseHandler = new MouseHandler(game.getPlayer(), game.getGameMap());
+        this.addKeyListener(new ClientKeyHandler(game.getPlayer(), game));
+        var mouseHandler = new ClientMouseHandler(game.getPlayer(), game.getGameMap());
         this.addMouseListener(mouseHandler);
         this.addMouseMotionListener(mouseHandler);
     }

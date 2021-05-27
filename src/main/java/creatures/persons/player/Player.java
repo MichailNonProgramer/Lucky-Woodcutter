@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Player extends Movable implements IPlayer, Serializable {
+    private String id;
     private Point point;
     private Direction direction;
     private transient BufferedImage spriteSheet;
@@ -38,7 +39,6 @@ public class Player extends Movable implements IPlayer, Serializable {
 //    private ArrayList<Weapons> weapons;
 //    private Weapons activeWeapon;
     private static final long serialVersionUID = 1L;
-    private String id;
 
     public void setCamera(Camera camera){
         this.camera = camera;

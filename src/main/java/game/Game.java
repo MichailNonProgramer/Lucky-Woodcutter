@@ -10,7 +10,7 @@ public class Game {
     public ArrayList<Player> players = new ArrayList<>();
     private GameMap gameMap;
     private  Player player;
-    private boolean soloGame;
+    final boolean soloGame;
 
     public Game(GameMap gameMap, boolean soloGame, Player player){
         this.gameMap = gameMap;
@@ -29,7 +29,7 @@ public class Game {
 
     public synchronized Player getPlayer() {return player;}
 
-    public boolean getSoloGame(){return this.soloGame;}
+    public boolean isSoloGame(){return this.soloGame;}
 
     private void gameInit(){
         gameMap.spawnEmptyMap();

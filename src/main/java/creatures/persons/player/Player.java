@@ -130,15 +130,15 @@ public class Player extends Movable implements IPlayer, Serializable {
         return this.inventory;
     }
 
-    public synchronized void move(Direction dir, Game game) {
+    public synchronized void move(Direction dir, GameMap gameMap) {
         camera.move(dir.getPoint());
 
-        var currentCell = game.getGameMap().getMap().get(point);
+        var currentCell = gameMap.getMap().get(point);
         currentCell.removeObjectFromCell(this);
         this.point = point.add(dir.getPoint());
-        var newCell = game.getGameMap().getMap().get(point);
+        var newCell = gameMap.getMap().get(point);
         newCell.addObjectInCell(this);
-        game.getGameMap().getMap().put(point, newCell);
+        gameMap.getMap().put(point, newCell);
 
         this.handsArea.setUpdatedActiveCords(point);
         this.visibleArea.setUpdatedActiveCords(point);

@@ -1,5 +1,8 @@
 package gameLogic.handlers;
 
+import network.Client;
+import network.Lock;
+import network.Sender;
 import utils.Direction;
 import creatures.persons.player.Player;
 import map.Cell;
@@ -7,11 +10,13 @@ import map.GameMap;
 import utils.Point;
 import gameLogic.area.Area;
 import gameLogic.area.HandsArea;
+import game.Game;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.IOException;
 import java.util.ConcurrentModificationException;
 
 public class ClientMouseHandler implements MouseListener, MouseMotionListener {
@@ -57,21 +62,28 @@ public class ClientMouseHandler implements MouseListener, MouseMotionListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        try {
-            var cell = getCellByMouseCords();
-            if (isCellFromActiveArea(cell)) {
-                var rawPoint = cell.getPoint();
-                var activePoint = new Point(rawPoint.x / Cell.cellSize, rawPoint.y / Cell.cellSize);
-                if (SwingUtilities.isLeftMouseButton(e)) {
-                    handleLeftButton(activePoint);
-                } else if (SwingUtilities.isRightMouseButton(e)) {
-                    handleRightButton(activePoint);
+        var isLeft = SwingUtilities.isLeftMouseButton(e);
+        var isRight = SwingUtilities.isRightMouseButton(e);
+
+        if (game.isSoloGame())
+            MouseHandlerGeneral.handlePressed(player, gameMap, mousePoint, isLeft, isRight);
+        else {
+            if (SwingUtilities.isLeftMouseButton(e) || SwingUtilities.isRightMouseButton(e)) {
+                try {
+                    Lock.isLockClient = true;
+                    if (isLeft) {
+                        Client.start(new Sender("MousePressedLeft", -1, mousePoint, player.getId()));
+                    } else if (isRight) {
+                        Client.start(new Sender("MousePressedRight", -1, mousePoint, player.getId()));
+                    }
+                    game.setGameMap(Client.getGameMap());
+                    game.setPlayer(Client.getPlayer());
+                    Lock.isLockClient = false;
+
+                } catch (IOException | ClassNotFoundException ioException) {
+                    ioException.printStackTrace();
                 }
             }
-        } catch (NullPointerException exception) {
-            System.out.println("OUT OF BOUNDS");
-        } catch (ConcurrentModificationException exception) {
-            System.out.println("THREAD ERROR, WILL FIX IT LATER");
         }
     }
 

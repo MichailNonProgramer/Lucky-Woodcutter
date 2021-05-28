@@ -21,7 +21,7 @@ public class Client extends  ObjectOutputStream {
     final Socket socket;
     private static String id;
 
-    public Client() throws IOException, ClassNotFoundException, InterruptedException {
+    public Client() throws IOException, ClassNotFoundException {
         InetAddress address = InetAddress.getByName(null);
         socket = new Socket(address, Common.PORT);
         in = new ObjectInputStream(socket.getInputStream());

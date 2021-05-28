@@ -20,19 +20,6 @@ public class ServerKeyHandler {
     }
 
     public void keyPressed(int key) {
-        var moveEvents = Arrays.asList(KeyEvent.VK_A, KeyEvent.VK_D,
-                KeyEvent.VK_W, KeyEvent.VK_S);
-        if (moveEvents.contains(key)) {
-            var newDirection = KeyHandlerGeneral.getDirectionByKey(key);
-            if (KeyHandlerGeneral.isCanWalkTo(player, gameMap, newDirection))
-                player.move(newDirection, gameMap);
-        }
-        if (key == KeyEvent.VK_F) {
-            if (player.getActiveResource() == Resources.Wood) {
-                player.setActiveResource(Resources.Stone);
-            } else {
-                player.setActiveResource(Resources.Wood);
-            }
-        }
+        KeyHandlerGeneral.handlePress(player, gameMap, key);
     }
 }

@@ -3,10 +3,28 @@ import creatures.persons.player.Player;
 import map.GameMap;
 import utils.Direction;
 import worldObjects.Solid;
+import worldObjects.destructibleObject.Resources;
 
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
 
 public class KeyHandlerGeneral {
+    public static void handlePress(Player player, GameMap gameMap, int key) {
+        var moveEvents = Arrays.asList(KeyEvent.VK_W, KeyEvent.VK_A, KeyEvent.VK_S, KeyEvent.VK_D);
+        if (moveEvents.contains(key)) {
+            var newDirection = KeyHandlerGeneral.getDirectionByKey(key);
+            if (KeyHandlerGeneral.isCanWalkTo(player, gameMap, newDirection))
+                player.move(newDirection, gameMap);
+        }
+        if (key == KeyEvent.VK_F) {
+            if (player.getActiveResource() == Resources.Wood) {
+                player.setActiveResource(Resources.Stone);
+            } else {
+                player.setActiveResource(Resources.Wood);
+            }
+        }
+    }
+
     public static Boolean isCanWalkTo(Player player, GameMap gameMap, Direction dir) {
         var newPoint = player.getPoint().add(dir.getPoint());
         var newCell = gameMap.getMap().get(newPoint);

@@ -74,7 +74,7 @@ public class GameWindow extends JPanel implements Runnable {
         bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         graphics2D = bufferedImage.createGraphics();
         this.addKeyListener(new ClientKeyHandler(game.getPlayer(), game));
-        var mouseHandler = new ClientMouseHandler(game.getPlayer(), game.getGameMap());
+        var mouseHandler = new ClientMouseHandler(game.getPlayer(), game);
         this.addMouseListener(mouseHandler);
         this.addMouseMotionListener(mouseHandler);
     }

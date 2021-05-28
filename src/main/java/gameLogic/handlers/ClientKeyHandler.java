@@ -28,21 +28,9 @@ public class ClientKeyHandler implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        var key = e.getKeyCode();
         if (game.isSoloGame()) {
-            var moveEvents = Arrays.asList(KeyEvent.VK_W, KeyEvent.VK_A, KeyEvent.VK_S, KeyEvent.VK_D);
-            var key = e.getKeyCode();
-            if (moveEvents.contains(key)) {
-                var newDirection = KeyHandlerGeneral.getDirectionByKey(key);
-                if (KeyHandlerGeneral.isCanWalkTo(player, gameMap, newDirection))
-                    player.move(newDirection, gameMap);
-            }
-            if (key == KeyEvent.VK_F) {
-                if (player.getActiveResource() == Resources.Wood) {
-                    player.setActiveResource(Resources.Stone);
-                } else {
-                    player.setActiveResource(Resources.Wood);
-                }
-            }
+            KeyHandlerGeneral.handlePress(player, gameMap, key);
         } else {
             try {
                 Lock.isLockClient = true;

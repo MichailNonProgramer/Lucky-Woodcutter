@@ -1,4 +1,4 @@
-package worldObjects.destructibleObject;
+package worldObjects.destructibleObjects;
 
 import utils.Point;
 import worldObjects.WorldGameObject;
@@ -11,13 +11,19 @@ public abstract class DestructibleObject implements WorldGameObject {
     private BufferedImage spriteSheet;
     private final Resources resourceName;
     private final int resourcesCount;
+    private final int scores;
 
-    public DestructibleObject(Point point, int lives, BufferedImage spriteSheet, Resources resourceName, int resourcesCount) {
+    public DestructibleObject(Point point, int lives, BufferedImage spriteSheet, Resources resourceName, int resourcesCount, int scores) {
         this.point = point;
         this.lives = lives;
         this.spriteSheet = spriteSheet;
         this.resourceName = resourceName;
         this.resourcesCount = resourcesCount;
+        this.scores = scores;
+    }
+
+    public int getScores() {
+        return scores;
     }
 
     public int getLives() {

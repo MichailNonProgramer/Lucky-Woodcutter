@@ -1,21 +1,21 @@
-package worldObjects.destructibleObject;
+package worldObjects.destructibleObjects;
 
 import graphics.DrawPriorities;
-import graphics.sprites.TreeSprites;
+import graphics.sprites.BoulderSprites;
 import utils.Point;
 import utils.RandomInt;
 import worldObjects.Solid;
 
 import java.awt.image.BufferedImage;
 
-public class Tree extends DestructibleObject implements Solid {
+public class Boulder extends DestructibleObject implements Solid {
 
-    public Tree(int x, int y) {
+    public Boulder(int x, int y) {
         this(new Point(x, y));
     }
 
-    public Tree(Point point) {
-        super(point, RandomInt.getValue(4, 1), TreeSprites.DAY, Resources.Wood, 3);
+    public Boulder(Point point) {
+        super(point, RandomInt.getValue(12, 7), BoulderSprites.DAY, Resources.Stone, RandomInt.getValue(64, 47), 0);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package worldObjects.destructibleObject;
+package worldObjects.destructibleObjects;
 
 public enum Resources {
     Nothing,

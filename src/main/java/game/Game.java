@@ -1,6 +1,9 @@
 package game;
 
+import config.GameConfig;
 import creatures.persons.player.Player;
+import gameLogic.infection.InfectionTimer;
+import map.Cell;
 import map.GameMap;
 
 
@@ -8,19 +11,20 @@ public class Game {
     public Player player;
     private final GameMap gameMap = new GameMap();
 
-    public Game(){
+    public Game() {
         gameInit();
-//        var tree = new Tree(0, 1);
-//        gameMap.getMap().get(tree.getPoint()).addObjectInCell(tree);
     }
 
-    public GameMap getGameMap(){
+    public GameMap getGameMap() {
         return gameMap;
     }
 
-    private void gameInit(){
+    private void gameInit() {
         gameMap.spawnEmptyMap();
-        player = new Player(0, 0);
+        player = new Player(
+                GameConfig.getMapWidth() / 2 / Cell.cellSize,
+                GameConfig.getMapWidth() / 2 / Cell.cellSize);
         gameMap.getMap().get(player.getPoint()).addObjectInCell(player);
+        InfectionTimer.start(gameMap);
     }
 }

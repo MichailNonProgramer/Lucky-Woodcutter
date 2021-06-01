@@ -1,26 +1,25 @@
 package creatures.persons.player;
 
-import utils.Direction;
+import gameLogic.Camera;
+import gameLogic.Inventory;
+import gameLogic.area.HandsArea;
+import gameLogic.area.VisibleArea;
 import graphics.DrawPriorities;
 import graphics.sprites.PlayerSprites;
 import map.GameMap;
+import utils.Direction;
 import utils.Point;
-import gameLogic.area.HandsArea;
-import gameLogic.area.VisibleArea;
-import gameLogic.Camera;
-import gameLogic.Inventory;
-import weapons.Weapons;
-import worldObjects.Movable;
+import worldObjects.Buildable;
 import worldObjects.Solid;
-import worldObjects.destructibleObject.DestructibleObject;
-import worldObjects.destructibleObject.Resources;
-import worldObjects.destructibleObject.StoneWall;
-import worldObjects.destructibleObject.WoodenWall;
+import worldObjects.WorldGameObject;
+import worldObjects.destructibleObjects.DestructibleObject;
+import worldObjects.destructibleObjects.Resources;
+import worldObjects.destructibleObjects.StoneWall;
+import worldObjects.destructibleObjects.WoodenWall;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
-public class Player extends Movable implements IPlayer {
+public class Player implements WorldGameObject, IPlayer {
     private Point point;
     private Direction direction;
     private BufferedImage spriteSheet;
@@ -29,8 +28,15 @@ public class Player extends Movable implements IPlayer {
     private final HandsArea handsArea;
     private final Inventory inventory;
     private Resources activeResource;
-    private ArrayList<Weapons> weapons;
-    private Weapons activeWeapon;
+    private int scores;
+
+    public int getScores() {
+        return scores;
+    }
+
+    public void setScores(int scores) {
+        this.scores = scores;
+    }
 
     public HandsArea getHandsArea() {
         return handsArea;
@@ -82,6 +88,7 @@ public class Player extends Movable implements IPlayer {
         this.camera.centerOnPlayer(this);
         this.inventory = new Inventory();
         this.activeResource = Resources.Wood;
+        this.scores = 0;
     }
 
     public Player(int x, int y) {
@@ -109,14 +116,14 @@ public class Player extends Movable implements IPlayer {
                 if (((DestructibleObject) worldGameObj).getLives() == 0) {
                     cell.removeObjectFromCell(worldGameObj);
                     inventory.addResources((DestructibleObject) worldGameObj);
-                    System.out.println("INVENTORY:" + " " + this.inventory.getContainer());
+                    scores += ((DestructibleObject) worldGameObj).getScores();
+                    System.out.println("INVENTORY: " + this.inventory.getContainer() + " SCORES: " + scores);
                 }
             }
         }
     }
 
     public void build(Point point, GameMap gameMap) {
-        var buildCost = 3;
         var cell = gameMap.getMap().get(point);
         var isCanBuild = true;
         for (var worldGameObj : cell.getObjectsInCell()) {
@@ -128,21 +135,22 @@ public class Player extends Movable implements IPlayer {
             }
         }
         if (isCanBuild) {
-            if (inventory.getContainer().containsKey(activeResource) && inventory.getContainer().get(activeResource) >= buildCost) {
-                DestructibleObject wall;
-                switch (activeResource) {
-                    case Wood:
-                        wall = new WoodenWall(cell.getPoint());
-                        break;
-                    case Stone:
-                        wall = new StoneWall(cell.getPoint());
-                        break;
-                    default:
-                        throw new IllegalStateException("Unexpected value: " + activeResource);
-                }
+            Buildable wall;
+            switch (activeResource) {
+                case Wood:
+                    wall = new WoodenWall(cell.getPoint());
+                    break;
+                case Stone:
+                    wall = new StoneWall(cell.getPoint());
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + activeResource);
+            }
 
-                cell.addObjectInCell(wall);
-                inventory.removeResources(wall,buildCost);
+            if (inventory.getContainer().containsKey(activeResource)
+                    && inventory.getContainer().get(activeResource) >= wall.getBuildCost()) {
+                cell.addObjectInCell((DestructibleObject) wall);
+                inventory.removeResources((DestructibleObject) wall, wall.getBuildCost());
                 System.out.println("INVENTORY:" + " " + this.inventory.getContainer());
             }
         }

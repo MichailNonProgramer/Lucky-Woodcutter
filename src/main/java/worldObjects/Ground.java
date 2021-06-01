@@ -24,6 +24,5 @@ public class Ground implements WorldGameObject {
 
     @Override
     public void changeSprite() {
-
     }
 }

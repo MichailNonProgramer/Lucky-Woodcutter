@@ -77,7 +77,10 @@ public class GameWindow extends JPanel implements Runnable {
         }
 
         graphics2D = bufferedImage.createGraphics();
+        graphics2D.setBackground(new Color(35, 129, 217));
         graphics2D.clearRect(0, 0, GameConfig.getScreenWidth(), GameConfig.getScreenHeight());
+
+
         for (var point : game.player.getVisibleArea().getActiveCords()) {
             Cell cell = game.getGameMap().getMap().get(point);
             if (cell != null) {
@@ -88,7 +91,6 @@ public class GameWindow extends JPanel implements Runnable {
                             Cell.cellSize, Cell.cellSize, null);
                 }
             }
-
         }
         // отрисовка активной области игрока
         for (var point : game.player.getHandsArea().getActiveCords()) {

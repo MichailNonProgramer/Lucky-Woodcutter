@@ -3,10 +3,12 @@ package map;
 import config.GameConfig;
 import utils.Point;
 import worldObjects.Ground;
-import worldObjects.destructibleObject.Boulder;
-import worldObjects.destructibleObject.Tree;
+import worldObjects.destructibleObjects.Boulder;
+import worldObjects.destructibleObjects.InfectedTree;
+import worldObjects.destructibleObjects.LiveTree;
 
 import java.util.HashMap;
+import java.util.concurrent.SynchronousQueue;
 
 public class GameMap {
     public HashMap<Point, Cell> getMap() {
@@ -30,15 +32,15 @@ public class GameMap {
         addTrees();
         addBoulders();
     }
-    // переписать спавн всего
+
     private void addBoulders() {
         for (var x = 0; x < GameConfig.getMapWidth() / Cell.cellSize; x++)
             main :for (var y = 0; y < GameConfig.getMapHeight() / Cell.cellSize; y++) {
-                var rnd = (int) Math.floor(Math.random() * (20));
+                var rnd = (int) Math.floor(Math.random() * (50));
                 if (rnd == 2) {
                     var boulder = new Boulder(x, y);
-                    for (var xui : map.get(boulder.getPoint()).getObjectsInCell()) {
-                        if (xui instanceof Tree) {
+                    for (var ob : map.get(boulder.getPoint()).getObjectsInCell()) {
+                        if (ob instanceof LiveTree || ob instanceof InfectedTree) {
                             continue main;
                         }
                     }
@@ -50,10 +52,15 @@ public class GameMap {
     private void addTrees() {
         for (var x = 0; x < GameConfig.getMapWidth() / Cell.cellSize; x++)
             for (var y = 0; y < GameConfig.getMapHeight() / Cell.cellSize; y++) {
-                var rnd = (int) Math.floor(Math.random() * (6));
+                var rnd = (int) Math.floor(Math.random() * (4));
+                var rndDead = (int) Math.floor(Math.random() * (40));
                 if (rnd == 2) {
-                    var tree = new Tree(x, y);
+                    var tree = new LiveTree(x, y);
                     map.get(tree.getPoint()).addObjectInCell(tree);
+                }
+                else if (rndDead == 3) {
+                    var deadTree = new InfectedTree(x, y);
+                    map.get(deadTree.getPoint()).addObjectInCell(deadTree);
                 }
             }
     }

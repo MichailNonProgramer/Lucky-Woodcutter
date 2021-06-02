@@ -8,14 +8,14 @@ import worldObjects.Solid;
 
 import java.awt.image.BufferedImage;
 
-public class InfectedTree extends DestructibleObject implements Solid {
+public class DeadTree extends DestructibleObject implements Solid {
 
-    public InfectedTree(int x, int y) {
+    public DeadTree(int x, int y) {
         this(new Point(x, y));
     }
 
-    public InfectedTree(Point point) {
-        super(point, RandomInt.getValue(6, 4), TreeSprites.INFECTED, Resources.Wood, RandomInt.getValue(23, 7), 15);
+    public DeadTree(Point point) {
+        super(point, RandomInt.getValue(4, 2), TreeSprites.DEAD, Resources.Wood, RandomInt.getValue(23, 7), 5);
     }
 
     @Override

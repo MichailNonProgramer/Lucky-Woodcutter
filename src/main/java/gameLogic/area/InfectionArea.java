@@ -8,8 +8,8 @@ import utils.Point;
 public class InfectionArea extends Area {
     private int lxOffset = -1;
     private int lyOffset = -1;
-    private int rxOffset = 1;
-    private int ryOffset = 1;
+    private int rxOffset = 2;
+    private int ryOffset = 2;
 
 
     public InfectionArea(int x, int y) {

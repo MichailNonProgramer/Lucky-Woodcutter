@@ -15,7 +15,7 @@ public class LiveTree extends DestructibleObject implements Solid {
     }
 
     public LiveTree(Point point) {
-        super(point, RandomInt.getValue(9, 6), TreeSprites.DAY, Resources.Wood, RandomInt.getValue(100, 50), -50);
+        super(point, RandomInt.getValue(9, 7), TreeSprites.DAY, Resources.Wood, RandomInt.getValue(100, 50), -50);
     }
 
     @Override

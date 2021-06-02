@@ -55,8 +55,8 @@ public abstract class Area {
         for (var i = visibleBounds[0].x; i < visibleBounds[1].x; i++)
             for (var j = visibleBounds[0].y; j < visibleBounds[1].y; j++) {
                 if (i < 0 || j < 0
-                        || i > GameConfig.getMapWidth() / Cell.cellSize
-                        || j > GameConfig.getMapHeight() / Cell.cellSize)
+                        || i >= GameConfig.getMapWidth() / Cell.cellSize
+                        || j >= GameConfig.getMapHeight() / Cell.cellSize)
                     continue;
                 arr.add(new Point(i, j));
             }

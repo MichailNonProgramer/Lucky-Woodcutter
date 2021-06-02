@@ -2,6 +2,7 @@ package game;
 
 import config.GameConfig;
 import creatures.persons.player.Player;
+import gameLogic.growing.TreesGrowTimer;
 import gameLogic.infection.InfectionTimer;
 import map.Cell;
 import map.GameMap;
@@ -26,5 +27,6 @@ public class Game {
                 GameConfig.getMapWidth() / 2 / Cell.cellSize);
         gameMap.getMap().get(player.getPoint()).addObjectInCell(player);
         InfectionTimer.start(gameMap);
+        TreesGrowTimer.start(gameMap);
     }
 }

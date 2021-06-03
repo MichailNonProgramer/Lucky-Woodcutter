@@ -9,6 +9,7 @@ import network.Lock;
 import utils.FPSCounter;
 import gameLogic.handlers.ClientKeyHandler;
 import gameLogic.handlers.ClientMouseHandler;
+import worldObjects.destructibleObjects.Resources;
 
 import javax.swing.*;
 import java.awt.*;
@@ -97,19 +98,30 @@ public class GameWindow extends JPanel implements Runnable {
                             cell.getY() - game.getPlayer().getCamera().getYOffset(),
                             Cell.cellSize, Cell.cellSize, null);
                 }
-        }
+            }
 
         }
         // отрисовка активной области игрока
-            for (var point : game.getPlayer().getHandsArea().getActiveCords()) {
-                Cell cell = game.getGameMap().getMap().get(point);
-                if (cell != null) {
-                    graphics2D.drawImage(EffectsSprites.ACTIVE,
-                            cell.getX() - game.getPlayer().getCamera().getXOffset(),
-                            cell.getY() - game.getPlayer().getCamera().getYOffset(),
-                            Cell.cellSize, Cell.cellSize, null);
-                }
+        for (var point : game.getPlayer().getHandsArea().getActiveCords()) {
+            Cell cell = game.getGameMap().getMap().get(point);
+            if (cell != null) {
+                graphics2D.drawImage(EffectsSprites.ACTIVE,
+                        cell.getX() - game.getPlayer().getCamera().getXOffset(),
+                        cell.getY() - game.getPlayer().getCamera().getYOffset(),
+                        Cell.cellSize, Cell.cellSize, null);
+            }
         }
+
+        graphics2D.drawString("Scores: " + game.getPlayer().getScores(), 10, 20);
+        var inv = game.getPlayer().getInventory().getContainer();
+        var woodCount = inv.get(Resources.Wood);
+        var stoneCount = inv.get(Resources.Stone);
+        if (woodCount == null)
+            woodCount = 0;
+        if (stoneCount == null)
+            stoneCount = 0;
+        graphics2D.drawString("Wood:   " + woodCount, 10, 40);
+        graphics2D.drawString("Stone:   " + stoneCount, 10, 60);
 
         graphics2D.dispose();
         Graph2D.drawImage(bufferedImage, 0, 0, this);
@@ -118,7 +130,6 @@ public class GameWindow extends JPanel implements Runnable {
 
     public synchronized void addNotify() {
         super.addNotify();
-        System.out.println(123);
         if (thread == null) {
             thread = new Thread(this, "GameThread");
             thread.start();

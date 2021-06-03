@@ -33,4 +33,9 @@ public class GameConfig {
 
     private static final int growPeriod = 60;
     private static final int infectionPeriod = 13;
+
+    public static boolean getIsSoloGame(){ return isSoloGame;}
+
+    private static final boolean isSoloGame = true;
+
 }

@@ -9,7 +9,7 @@ public class GameConfig {
         return screenHeight;
     }
 
-    private static final int screenWidth = 1530;
+    private static final int screenWidth = 1710;
     private static final int screenHeight = 990;
 
     public static int getMapWidth() {
@@ -20,8 +20,8 @@ public class GameConfig {
         return mapHeight;
     }
 
-    private static final int mapWidth = 4500;
-    private static final int mapHeight = 4500;
+    private static final int mapWidth = 45000;
+    private static final int mapHeight = 45000;
 
     public static int getGrowPeriod() {
         return growPeriod;

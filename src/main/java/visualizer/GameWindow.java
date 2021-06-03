@@ -111,8 +111,9 @@ public class GameWindow extends JPanel implements Runnable {
                         Cell.cellSize, Cell.cellSize, null);
             }
         }
-
-        graphics2D.drawString("Scores: " + game.getPlayer().getScores(), 10, 20);
+        graphics2D.setFont(new Font("Segoe UI Black", Font.PLAIN, 30));
+        //graphics2D.setColor(Color.MAGENTA);
+        graphics2D.drawString("Scores: " + game.getPlayer().getScores(), 10, 30);
         var inv = game.getPlayer().getInventory().getContainer();
         var woodCount = inv.get(Resources.Wood);
         var stoneCount = inv.get(Resources.Stone);
@@ -120,8 +121,9 @@ public class GameWindow extends JPanel implements Runnable {
             woodCount = 0;
         if (stoneCount == null)
             stoneCount = 0;
-        graphics2D.drawString("Wood:   " + woodCount, 10, 40);
-        graphics2D.drawString("Stone:   " + stoneCount, 10, 60);
+        graphics2D.setFont(new Font("Segoe UI Black", Font.PLAIN, 22));
+        graphics2D.drawString("Wood: " + woodCount, 10, 60);
+        graphics2D.drawString("Stone: " + stoneCount, 10, 90);
 
         graphics2D.dispose();
         Graph2D.drawImage(bufferedImage, 0, 0, this);

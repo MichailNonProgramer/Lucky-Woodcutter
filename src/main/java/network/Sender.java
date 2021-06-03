@@ -16,20 +16,4 @@ public class Sender implements Serializable {
         this.mousePoint = mousePoint;
         this.id = id;
     }
-
-    public String getId(){
-        return id;
-    }
-
-    public String getEvent() {
-        return event;
-    }
-
-    public int getKeyCode() {
-        return keyCode;
-    }
-
-    public Point getMousePoint() {
-        return mousePoint;
-    }
 }

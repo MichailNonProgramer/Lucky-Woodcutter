@@ -1,7 +1,7 @@
 package gameLogic;
 
-import worldObjects.destructibleObject.DestructibleObject;
-import worldObjects.destructibleObject.Resources;
+import worldObjects.destructibleObjects.DestructibleObject;
+import worldObjects.destructibleObjects.Resources;
 
 import java.io.Serializable;
 import java.util.HashMap;

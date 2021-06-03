@@ -12,7 +12,7 @@ import java.util.*;
 
 
 public class Cell implements Serializable {
-    public static final int cellSize = 70;
+    public static final int cellSize = 90;
     private final Point point;
     private final ArrayList<WorldGameObject> objectsInCell = new ArrayList<>();
     private static final long serialVersionUID = 1L;

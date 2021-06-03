@@ -3,7 +3,7 @@ import creatures.persons.player.Player;
 import map.GameMap;
 import utils.Direction;
 import worldObjects.Solid;
-import worldObjects.destructibleObject.Resources;
+import worldObjects.destructibleObjects.Resources;
 
 import java.awt.event.KeyEvent;
 import java.util.Arrays;

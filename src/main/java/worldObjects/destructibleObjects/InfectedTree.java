@@ -1,21 +1,21 @@
-package worldObjects.destructibleObject;
+package worldObjects.destructibleObjects;
 
 import graphics.DrawPriorities;
-import graphics.sprites.BoulderSprites;
+import graphics.sprites.TreeSprites;
 import utils.Point;
 import utils.RandomInt;
 import worldObjects.Solid;
 
 import java.awt.image.BufferedImage;
 
-public class Boulder extends DestructibleObject implements Solid {
+public class InfectedTree extends DestructibleObject implements Solid {
 
-    public Boulder(int x, int y) {
+    public InfectedTree(int x, int y) {
         this(new Point(x, y));
     }
 
-    public Boulder(Point point) {
-        super(point, RandomInt.getValue(8, 5), BoulderSprites.DAY, Resources.Stone, 4);
+    public InfectedTree(Point point) {
+        super(point, RandomInt.getValue(6, 4), TreeSprites.INFECTED, Resources.Wood, RandomInt.getValue(23, 7), 15);
     }
 
     @Override
@@ -35,10 +35,5 @@ public class Boulder extends DestructibleObject implements Solid {
 
     @Override
     public void changeSprite() {
-    }
-
-    @Override
-    public void setSpriteSheet() {
-        super.setSpriteSheet(BoulderSprites.DAY);
     }
 }

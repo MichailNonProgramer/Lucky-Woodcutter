@@ -1,4 +1,4 @@
-package worldObjects.destructibleObject;
+package worldObjects.destructibleObjects;
 
 import graphics.DrawPriorities;
 import graphics.sprites.TreeSprites;
@@ -8,14 +8,14 @@ import worldObjects.Solid;
 
 import java.awt.image.BufferedImage;
 
-public class Tree extends DestructibleObject implements Solid {
+public class DeadTree extends DestructibleObject implements Solid {
 
-    public Tree(int x, int y) {
+    public DeadTree(int x, int y) {
         this(new Point(x, y));
     }
 
-    public Tree(Point point) {
-        super(point, RandomInt.getValue(4, 1), TreeSprites.DAY, Resources.Wood, 3);
+    public DeadTree(Point point) {
+        super(point, RandomInt.getValue(4, 2), TreeSprites.DEAD, Resources.Wood, RandomInt.getValue(23, 7), 5);
     }
 
     @Override

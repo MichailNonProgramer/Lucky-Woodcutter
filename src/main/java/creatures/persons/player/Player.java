@@ -1,23 +1,24 @@
 package creatures.persons.player;
 
+import gameLogic.Camera;
+import gameLogic.Inventory;
+import gameLogic.area.HandsArea;
+import gameLogic.area.VisibleArea;
 import game.Game;
 import map.Cell;
 import utils.Direction;
 import graphics.DrawPriorities;
 import graphics.sprites.PlayerSprites;
 import map.GameMap;
+import utils.Direction;
 import utils.Point;
-import gameLogic.area.HandsArea;
-import gameLogic.area.VisibleArea;
-import gameLogic.Camera;
-import gameLogic.Inventory;
-import weapons.Weapons;
-import worldObjects.Movable;
+import worldObjects.Buildable;
 import worldObjects.Solid;
-import worldObjects.destructibleObject.DestructibleObject;
-import worldObjects.destructibleObject.Resources;
-import worldObjects.destructibleObject.StoneWall;
-import worldObjects.destructibleObject.WoodenWall;
+import worldObjects.WorldGameObject;
+import worldObjects.destructibleObjects.DestructibleObject;
+import worldObjects.destructibleObjects.Resources;
+import worldObjects.destructibleObjects.StoneWall;
+import worldObjects.destructibleObjects.WoodenWall;
 
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
@@ -26,9 +27,9 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Player extends Movable implements IPlayer, Serializable {
-    private String id;
+public class Player implements WorldGameObject, IPlayer {
     private Point point;
+    private String id;
     private Direction direction;
     private transient BufferedImage spriteSheet;
     private Camera camera;
@@ -36,9 +37,16 @@ public class Player extends Movable implements IPlayer, Serializable {
     private HandsArea handsArea;
     private Inventory inventory;
     private Resources activeResource;
-//    private ArrayList<Weapons> weapons;
-//    private Weapons activeWeapon;
     private static final long serialVersionUID = 1L;
+    private int scores;
+
+    public int getScores() {
+        return scores;
+    }
+
+    public void setScores(int scores) {
+        this.scores = scores;
+    }
 
     public void setCamera(Camera camera){
         this.camera = camera;
@@ -106,6 +114,7 @@ public class Player extends Movable implements IPlayer, Serializable {
         this.camera.centerOnPlayer(this);
         this.inventory = new Inventory();
         this.activeResource = Resources.Wood;
+        this.scores = 0;
         this.id = generateID();
     }
 
@@ -152,7 +161,8 @@ public class Player extends Movable implements IPlayer, Serializable {
                 if (((DestructibleObject) worldGameObj).getLives() == 0) {
                     cell.removeObjectFromCell(worldGameObj);
                     inventory.addResources((DestructibleObject) worldGameObj);
-                    System.out.println("INVENTORY:" + " " + this.inventory.getContainer());
+                    scores += ((DestructibleObject) worldGameObj).getScores();
+                    System.out.println("INVENTORY: " + this.inventory.getContainer() + " SCORES: " + scores);
                 }
             }
         }
@@ -164,7 +174,6 @@ public class Player extends Movable implements IPlayer, Serializable {
     }
 
     public void build(Point point, GameMap gameMap) {
-        var buildCost = 3;
         var cell = gameMap.getMap().get(point);
         var isCanBuild = true;
         for (var worldGameObj : cell.getObjectsInCell()) {
@@ -176,21 +185,22 @@ public class Player extends Movable implements IPlayer, Serializable {
             }
         }
         if (isCanBuild) {
-            if (inventory.getContainer().containsKey(activeResource) && inventory.getContainer().get(activeResource) >= buildCost) {
-                DestructibleObject wall;
-                switch (activeResource) {
-                    case Wood:
-                        wall = new WoodenWall(cell.getPoint());
-                        break;
-                    case Stone:
-                        wall = new StoneWall(cell.getPoint());
-                        break;
-                    default:
-                        throw new IllegalStateException("Unexpected value: " + activeResource);
-                }
+            Buildable wall;
+            switch (activeResource) {
+                case Wood:
+                    wall = new WoodenWall(cell.getPoint());
+                    break;
+                case Stone:
+                    wall = new StoneWall(cell.getPoint());
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + activeResource);
+            }
 
-                cell.addObjectInCell(wall);
-                inventory.removeResources(wall,buildCost);
+            if (inventory.getContainer().containsKey(activeResource)
+                    && inventory.getContainer().get(activeResource) >= wall.getBuildCost()) {
+                cell.addObjectInCell((DestructibleObject) wall);
+                inventory.removeResources((DestructibleObject) wall, wall.getBuildCost());
                 System.out.println("INVENTORY:" + " " + this.inventory.getContainer());
             }
         }
@@ -227,8 +237,8 @@ public class Player extends Movable implements IPlayer, Serializable {
     @Override
     public boolean equals(Object obj){
         try {
-            System.out.println(this.point.toString() + ' ' + ((Player)obj).point.toString());
-            System.out.println(this.point == ((Player)obj).point);
+           // System.out.println(this.point.toString() + ' ' + ((Player)obj).point.toString());
+            // System.out.println(this.point == ((Player)obj).point);
             return this.point == ((Player)obj).point;
         } catch (Exception e){
             return false;

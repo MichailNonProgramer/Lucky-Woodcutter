@@ -8,7 +8,7 @@ import utils.Direction;
 import creatures.persons.player.Player;
 import map.GameMap;
 import worldObjects.Solid;
-import worldObjects.destructibleObject.Resources;
+import worldObjects.destructibleObjects.Resources;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

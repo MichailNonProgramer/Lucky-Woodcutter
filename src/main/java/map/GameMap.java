@@ -23,7 +23,7 @@ public class GameMap implements Serializable {
         map = new HashMap<>();
     }
 
-    public void spawnEmptyMap() {
+    public void spawnMap() {
         for (var x = 0; x < GameConfig.getMapWidth() / Cell.cellSize; x++)
             for (var y = 0; y < GameConfig.getMapHeight() / Cell.cellSize; y++) {
                 var newCell = new Cell(x * Cell.cellSize, y * Cell.cellSize);

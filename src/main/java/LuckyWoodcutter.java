@@ -17,7 +17,7 @@ public class LuckyWoodcutter {
         MultiServer multiServer;
         if (soloGame) {
             var gameMap = new GameMap();
-            gameMap.spawnEmptyMap();
+            gameMap.spawnMap();
             display = new Display(GameConfig.getScreenWidth(), GameConfig.getScreenHeight(), new Game(gameMap, soloGame, new Player(1, 2)));
         }
         else {

@@ -1,6 +1,8 @@
 package network;
 
 import creatures.persons.player.Player;
+import gameLogic.growing.TreesGrowTimer;
+import gameLogic.infection.InfectionTimer;
 import map.Cell;
 import map.GameMap;
 import utils.Point;
@@ -19,7 +21,9 @@ public class MultiServer {
     public static HashMap<String, Player> players = new HashMap<>();
 
     public static void main(String[] args) throws IOException {
-        gameMap.spawnEmptyMap();
+        gameMap.spawnMap();
+        InfectionTimer.start(gameMap);
+        TreesGrowTimer.start(gameMap);
         ServerSocket s = new ServerSocket(Common.PORT);
         System.out.println("Server Started");
         try (s){

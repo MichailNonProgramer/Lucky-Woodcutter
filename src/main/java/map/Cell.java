@@ -4,7 +4,7 @@ import creatures.persons.player.Player;
 import utils.Point;
 import worldObjects.Ground;
 import worldObjects.WorldGameObject;
-import worldObjects.destructibleObject.DestructibleObject;
+import worldObjects.destructibleObjects.DestructibleObject;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;

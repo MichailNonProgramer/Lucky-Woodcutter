@@ -16,13 +16,16 @@ public class Game {
     private  Player player;
     final boolean soloGame;
 
-    public Game(GameMap gameMap, boolean soloGame){
+    public Game(GameMap gameMap, boolean soloGame, Player player){
         this.gameMap = gameMap;
         this.player = player;
         this.soloGame = soloGame;
         players.add(player);
-        if (soloGame)
+        if (soloGame) {
             gameMap.getMap().get(player.getPoint()).addObjectInCell(player);
+            InfectionTimer.start(gameMap);
+            TreesGrowTimer.start(gameMap);
+        }
     }
 
     public GameMap getGameMap() {
@@ -34,7 +37,7 @@ public class Game {
     public boolean isSoloGame(){return this.soloGame;}
 
     private void gameInit() {
-        gameMap.spawnEmptyMap();
+        gameMap.spawnMap();
         player = new Player(
                 GameConfig.getMapWidth() / 2 / Cell.cellSize,
                 GameConfig.getMapWidth() / 2 / Cell.cellSize);

@@ -1,6 +1,7 @@
 package worldObjects.destructibleObjects;
 
 import graphics.DrawPriorities;
+import graphics.sprites.BoulderSprites;
 import graphics.sprites.TreeSprites;
 import utils.Point;
 import utils.RandomInt;
@@ -35,5 +36,10 @@ public class InfectedTree extends DestructibleObject implements Solid {
 
     @Override
     public void changeSprite() {
+    }
+
+    @Override
+    public void setSpriteSheet() {
+        super.setSpriteSheet(TreeSprites.INFECTED);
     }
 }

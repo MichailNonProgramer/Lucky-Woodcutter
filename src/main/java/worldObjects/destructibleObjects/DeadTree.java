@@ -24,21 +24,17 @@ public class DeadTree extends DestructibleObject implements Solid {
     }
 
     @Override
+    public void changeSprite() {
+
+    }
+
+    @Override
     public void reduceLives() {
         super.reduceLives();
     }
 
     @Override
-    public void setSpriteSheet(BufferedImage spriteSheet) {
-        super.setSpriteSheet(spriteSheet);
-    }
-
-    @Override
-    public void changeSprite() {
-    }
-
-    @Override
     public void setSpriteSheet() {
-        super.setSpriteSheet(TreeSprites.DAY);
+        super.setSpriteSheet(TreeSprites.DEAD);
     }
 }

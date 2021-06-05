@@ -1,25 +1,21 @@
 package network;
 
 import creatures.persons.player.Player;
-import game.Game;
-import map.Cell;
 import map.GameMap;
-import utils.Point;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
 
 
-public class Client extends  ObjectOutputStream {
+public class Client extends ObjectOutputStream {
     public static Player player;
     private static GameMap gameMap;
     private static ObjectInputStream in;
     private static ObjectOutputStream out;
     final Socket socket;
-    private static String id;
 
     public Client() throws IOException, ClassNotFoundException {
         InetAddress address = InetAddress.getByName(null);
@@ -35,24 +31,19 @@ public class Client extends  ObjectOutputStream {
 
     public synchronized static void start(Sender sender) throws IOException, ClassNotFoundException {
         try {
-                out.writeObject(sender);
-                gameMap = (GameMap) in.readObject();
-                player = (Player) in.readObject();
-                System.out.println(player.getX() + " " + player.getY());
-        } catch (Exception exception){
+            out.writeObject(sender);
+            gameMap = (GameMap) in.readObject();
+            player = (Player) in.readObject();
+        } catch (Exception exception) {
             System.out.println(exception.getMessage());
         }
     }
 
-    public String getId(){
-        return id;
-    }
-
-    public static Player getPlayer(){
+    public static Player getPlayer() {
         return player;
     }
 
-    public static GameMap getGameMap(){
+    public static GameMap getGameMap() {
         return gameMap;
     }
 }

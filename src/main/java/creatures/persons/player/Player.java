@@ -4,9 +4,6 @@ import gameLogic.Camera;
 import gameLogic.Inventory;
 import gameLogic.area.HandsArea;
 import gameLogic.area.VisibleArea;
-import game.Game;
-import map.Cell;
-import utils.Direction;
 import graphics.DrawPriorities;
 import graphics.sprites.PlayerSprites;
 import map.GameMap;
@@ -21,11 +18,8 @@ import worldObjects.destructibleObjects.StoneWall;
 import worldObjects.destructibleObjects.WoodenWall;
 
 import java.awt.image.BufferedImage;
-import java.io.Serializable;
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Player implements WorldGameObject, IPlayer {
     private Point point;
@@ -48,22 +42,26 @@ public class Player implements WorldGameObject, IPlayer {
         this.scores = scores;
     }
 
-    public void setCamera(Camera camera){
+    public void setCamera(Camera camera) {
         this.camera = camera;
     }
 
-    public void setId(String id){
+    public void setId(String id) {
         this.id = id;
     }
-    public void setVisibleArea(VisibleArea visibleArea){
+
+    public void setVisibleArea(VisibleArea visibleArea) {
         this.visibleArea = visibleArea;
     }
-    public void setHandsArea(HandsArea handsArea){
+
+    public void setHandsArea(HandsArea handsArea) {
         this.handsArea = handsArea;
     }
-    public void setInventory(Inventory inventory){
+
+    public void setInventory(Inventory inventory) {
         this.inventory = inventory;
     }
+
     public HandsArea getHandsArea() {
         return handsArea;
     }
@@ -122,20 +120,7 @@ public class Player implements WorldGameObject, IPlayer {
         this(new Point(x, y));
     }
 
-    public Player(Player other){
-        this(other.getPoint());
-        this.setActiveResource(other.getActiveResource());
-        this.setDirection(other.getDirection());
-        this.setSpriteSheet();
-        this.setVisibleArea(other.getVisibleArea());
-
-        this.setCamera(other.getCamera());
-        this.setHandsArea(other.handsArea);
-        this.setId(other.getId());
-        this.setInventory(other.getInventory());
-    }
-
-    public Inventory getInventory(){
+    public Inventory getInventory() {
         return this.inventory;
     }
 
@@ -162,13 +147,12 @@ public class Player implements WorldGameObject, IPlayer {
                     cell.removeObjectFromCell(worldGameObj);
                     inventory.addResources((DestructibleObject) worldGameObj);
                     scores += ((DestructibleObject) worldGameObj).getScores();
-                    System.out.println("INVENTORY: " + this.inventory.getContainer() + " SCORES: " + scores);
                 }
             }
         }
     }
 
-    private String generateID(){
+    private String generateID() {
         var random = new SecureRandom();
         return new BigInteger(130, random).toString(32);
     }
@@ -201,7 +185,6 @@ public class Player implements WorldGameObject, IPlayer {
                     && inventory.getContainer().get(activeResource) >= wall.getBuildCost()) {
                 cell.addObjectInCell((DestructibleObject) wall);
                 inventory.removeResources((DestructibleObject) wall, wall.getBuildCost());
-                System.out.println("INVENTORY:" + " " + this.inventory.getContainer());
             }
         }
     }
@@ -235,12 +218,10 @@ public class Player implements WorldGameObject, IPlayer {
     }
 
     @Override
-    public boolean equals(Object obj){
+    public boolean equals(Object obj) {
         try {
-           // System.out.println(this.point.toString() + ' ' + ((Player)obj).point.toString());
-            // System.out.println(this.point == ((Player)obj).point);
-            return this.point == ((Player)obj).point;
-        } catch (Exception e){
+            return this.point == ((Player) obj).point;
+        } catch (Exception e) {
             return false;
         }
     }

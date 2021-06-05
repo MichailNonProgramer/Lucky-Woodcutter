@@ -1,12 +1,8 @@
 package gameLogic.handlers;
 
 import creatures.persons.player.Player;
-import map.Cell;
 import map.GameMap;
 import utils.Point;
-
-import javax.swing.*;
-import java.util.ConcurrentModificationException;
 
 public class ServerMouseHandler {
     private final Player player;

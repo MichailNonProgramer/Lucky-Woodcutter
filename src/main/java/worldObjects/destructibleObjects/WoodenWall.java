@@ -12,7 +12,7 @@ public class WoodenWall extends DestructibleObject implements Solid, Buildable {
     }
 
     public WoodenWall(Point point) {
-        super(point,10, WoodenWallSprites.DAY, Resources.Wood, 5, 0);
+        super(point, 10, WoodenWallSprites.DAY, Resources.Wood, 5, 0);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class WoodenWall extends DestructibleObject implements Solid, Buildable {
 
     @Override
     public int getBuildCost() {
-        return 10;
+        return 30;
     }
 
     @Override

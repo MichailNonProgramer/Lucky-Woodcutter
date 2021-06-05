@@ -34,8 +34,7 @@ public class MouseHandlerGeneral {
             }
         } catch (NullPointerException exception) {
             System.out.println("OUT OF BOUNDS");
-        } catch (ConcurrentModificationException exception) {
-            System.out.println("THREAD ERROR, WILL FIX IT LATER");
+        } catch (ConcurrentModificationException ignored) {
         }
     }
 

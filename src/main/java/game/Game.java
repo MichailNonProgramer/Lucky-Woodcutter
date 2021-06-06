@@ -1,10 +1,8 @@
 package game;
 
-import config.GameConfig;
 import creatures.persons.player.Player;
 import gameLogic.growing.TreesGrowTimer;
 import gameLogic.infection.InfectionTimer;
-import map.Cell;
 import map.GameMap;
 
 import java.util.ArrayList;
@@ -13,10 +11,10 @@ import java.util.ArrayList;
 public class Game {
     public ArrayList<Player> players = new ArrayList<>();
     private GameMap gameMap;
-    private  Player player;
+    private Player player;
     final boolean soloGame;
 
-    public Game(GameMap gameMap, boolean soloGame, Player player){
+    public Game(GameMap gameMap, boolean soloGame, Player player) {
         this.gameMap = gameMap;
         this.player = player;
         this.soloGame = soloGame;
@@ -32,25 +30,19 @@ public class Game {
         return gameMap;
     }
 
-    public synchronized Player getPlayer() {return player;}
-
-    public boolean isSoloGame(){return this.soloGame;}
-
-    private void gameInit() {
-        gameMap.spawnMap();
-        player = new Player(
-                GameConfig.getMapWidth() / 2 / Cell.cellSize,
-                GameConfig.getMapWidth() / 2 / Cell.cellSize);
-        players.add(player);
-        gameMap.getMap().get(player.getPoint()).addObjectInCell(player);
-        InfectionTimer.start(gameMap);
-        TreesGrowTimer.start(gameMap);
+    public synchronized Player getPlayer() {
+        return player;
     }
 
-    public synchronized void setPlayer(Player player){
+    public boolean isSoloGame() {
+        return this.soloGame;
+    }
+
+    public synchronized void setPlayer(Player player) {
         this.player = player;
     }
-    public synchronized void setGameMap(GameMap gameMap){
+
+    public synchronized void setGameMap(GameMap gameMap) {
         this.gameMap = gameMap;
     }
 }

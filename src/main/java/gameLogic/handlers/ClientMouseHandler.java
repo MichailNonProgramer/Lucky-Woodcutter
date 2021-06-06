@@ -1,23 +1,19 @@
 package gameLogic.handlers;
 
+import creatures.persons.player.Player;
+import game.Game;
+import map.Cell;
+import map.GameMap;
 import network.Client;
 import network.Lock;
 import network.Sender;
-import utils.Direction;
-import creatures.persons.player.Player;
-import map.Cell;
-import map.GameMap;
 import utils.Point;
-import gameLogic.area.Area;
-import gameLogic.area.HandsArea;
-import game.Game;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.IOException;
-import java.util.ConcurrentModificationException;
 
 public class ClientMouseHandler implements MouseListener, MouseMotionListener {
     private final Game game;
@@ -27,6 +23,7 @@ public class ClientMouseHandler implements MouseListener, MouseMotionListener {
     private int mouseX = -1;
     private int mouseY = -1;
     private Point mousePoint;
+    private Cell prevCell;
 
     public ClientMouseHandler(Player player, Game game) {
         this.game = game;
@@ -38,7 +35,6 @@ public class ClientMouseHandler implements MouseListener, MouseMotionListener {
     public void mouseMoved(MouseEvent e) {
         mouseX = e.getX();
         mouseY = e.getY();
-        //var prevPoint = new Point(mousePoint.x, mousePoint.y);
         mousePoint = new Point(mouseX, mouseY);
         if (game.isSoloGame())
             try {
@@ -46,6 +42,13 @@ public class ClientMouseHandler implements MouseListener, MouseMotionListener {
             } catch (NullPointerException ignored) {
             }
         else {
+            try {
+                var cell = MouseHandlerGeneral.getCellByMouseCords(player, gameMap, mouseX, mouseY);
+                if (prevCell != null && prevCell.getPoint().equals(cell.getPoint()))
+                    return;
+                prevCell = cell;
+            } catch (NullPointerException ignored) {
+            }
             try {
                 Lock.isLockClient = true;
                 Client.start(new Sender("MouseMoved", -1, mousePoint, player.getId()));

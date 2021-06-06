@@ -5,12 +5,13 @@ import gameLogic.handlers.ServerKeyHandler;
 import gameLogic.handlers.ServerMouseHandler;
 import utils.Point;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Random;
 
 public class Server extends Thread {
-    private final Socket s;
     private ObjectInputStream in;
     private ObjectOutputStream out;
     private Player player;
@@ -19,12 +20,11 @@ public class Server extends Thread {
 
     public Server(Socket s) throws IOException, ClassNotFoundException {
         var r = new Random();
-        this.s = s;
         out = new ObjectOutputStream((s.getOutputStream()));
         in = new ObjectInputStream(s.getInputStream());
         this.player = new Player(new Point(r.nextInt(10), r.nextInt(10)));
         System.out.println(player.getX() + " " + player.getY());
-        MultiServer.players.put( this.player.getId(), this.player);
+        MultiServer.players.put(this.player.getId(), this.player);
         MultiServer.gameMap.getMap().get(this.player.getPoint()).addObjectInCell(this.player);
         this.keyHandler = new ServerKeyHandler(player, MultiServer.gameMap);
         this.mouseHandler = new ServerMouseHandler(player, MultiServer.gameMap);
@@ -34,21 +34,21 @@ public class Server extends Thread {
         start();
     }
 
-    public void run() {
+    public synchronized void run() {
         while (true) {
             try {
                 var send = in.readObject();
                 if (send != null) {
                     parseMessage((Sender) send);
                 }
-                    out.writeObject(MultiServer.gameMap);
-                    out.writeObject(player);
-                    out.reset();
-                    System.out.println(player.getX() + " " + player.getY());
-                    out.flush();
-                    Thread.sleep(100);
+                // нужен фикс
+                out.writeObject(MultiServer.gameMap);
+                out.writeObject(player);
+                out.reset();
+                out.flush();
+                Thread.sleep(100);
 
-            } catch (IOException | ClassNotFoundException | InterruptedException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

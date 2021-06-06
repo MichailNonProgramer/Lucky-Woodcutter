@@ -12,7 +12,7 @@ public class StoneWall extends DestructibleObject implements Solid, Buildable {
     }
 
     public StoneWall(Point point) {
-        super(point,20, StoneWallSprites.DAY, Resources.Stone, 5, 0);
+        super(point, 20, StoneWallSprites.DAY, Resources.Stone, 5, 0);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class StoneWall extends DestructibleObject implements Solid, Buildable {
 
     @Override
     public int getBuildCost() {
-        return 10;
+        return 30;
     }
 
     @Override

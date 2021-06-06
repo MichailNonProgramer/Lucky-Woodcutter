@@ -20,8 +20,8 @@ public class GameConfig {
         return mapHeight;
     }
 
-    private static final int mapWidth = 45000;
-    private static final int mapHeight = 45000;
+    private static final int mapWidth = 4500;
+    private static final int mapHeight = 4500;
 
     public static int getGrowPeriod() {
         return growPeriod;
@@ -36,6 +36,6 @@ public class GameConfig {
 
     public static boolean getIsSoloGame(){ return isSoloGame;}
 
-    private static final boolean isSoloGame = true;
+    private static final boolean isSoloGame = false;
 
 }

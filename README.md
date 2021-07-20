@@ -12,7 +12,7 @@
 
     В мультиплеере 1 игрок - лесоруб, 2 игрок - жена лесоруба
     
-    ![image](https://user-images.githubusercontent.com/46228212/126317209-4914227a-703e-480f-a046-ae8dc92d96d5.png)
+   ![image](https://user-images.githubusercontent.com/46228212/126317209-4914227a-703e-480f-a046-ae8dc92d96d5.png)
 
     
 # Разработчики проекта
